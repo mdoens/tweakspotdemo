@@ -16,7 +16,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:sition_nl/tweakspot.git"
+            "url": "https://bitbucket.org/sition_nl/tweakspot.git"
         },
         {
             "type": "path",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08ed41e9bba1c7e32bd010ba7e3ab29f",
+    "content-hash": "df4873518ae8d8cb14a17d43f14c5146",
     "packages": [
         {
             "name": "async-aws/core",
@@ -6249,7 +6249,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:sition_nl/tweakspot.git",
-                "reference": "3ff76a70e45ffe6972dd97e8a3e5e039471df93f"
+                "reference": "2c2777c6542adedc2743168744a64d80c91c0e0c"
             },
             "require": {
                 "php": ">=8.2",
@@ -6292,7 +6292,7 @@
                 "proprietary"
             ],
             "description": "Visual Merchandiser Pro - Native merchandising for Shopware 6.7",
-            "time": "2026-03-19T21:37:47+00:00"
+            "time": "2026-03-19T22:28:31+00:00"
         },
         {
             "name": "symfony/asset",
@@ -11586,6 +11586,6 @@
     "platform": {
         "composer-runtime-api": "^2.0"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

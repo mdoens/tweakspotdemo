@@ -12,8 +12,7 @@ WORKDIR /src
 
 ENV SHOPWARE_CACHE_ID=docker
 
-RUN --mount=type=ssh \
-    --mount=type=cache,target=/root/.composer \
+RUN --mount=type=cache,target=/root/.composer \
     --mount=type=cache,target=/root/.npm \
     /usr/local/bin/entrypoint.sh shopware-cli project ci /src
 
