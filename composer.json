@@ -1,0 +1,59 @@
+{
+    "name": "strix/tweakspot-hosting",
+    "description": "Shopware 6.7 production hosting with Visual Merchandiser Pro plugin",
+    "license": "proprietary",
+    "type": "project",
+    "require": {
+        "composer-runtime-api": "^2.0",
+        "shopware/administration": "*",
+        "shopware/core": "~6.7.0",
+        "shopware/docker": "^0.3",
+        "shopware/elasticsearch": "*",
+        "shopware/storefront": "*",
+        "strix/visual-merchandiser": "dev-main",
+        "symfony/flex": "~2"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:sition_nl/tweakspot.git"
+        },
+        {
+            "type": "path",
+            "url": "custom/plugins/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "scripts": {
+        "auto-scripts": {
+            "assets:install": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": true,
+            "endpoint": [
+                "https://raw.githubusercontent.com/shopware/recipes/flex/main/index.json",
+                "flex://defaults"
+            ]
+        }
+    }
+}

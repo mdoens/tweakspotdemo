@@ -1,0 +1,88 @@
+services:
+  shopware:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      ssh:
+        - default
+    restart: always
+    environment:
+      DATABASE_URL: mysql://shopware:shopware@db:3306/shopware
+      APP_ENV: prod
+      APP_SECRET: ${APP_SECRET:-a3f8c2e7d1b94f6a0e5c3d8b7a1f9e2c4d6b8a0f3e5c7d9b1a4f6e8c0d2b5a7}
+      APP_URL: ${APP_URL:-https://tweakspot.db.strix.tools}
+      OPENSEARCH_URL: http://opensearch:9200
+      SHOPWARE_ES_ENABLED: 1
+      SHOPWARE_ES_INDEXING_ENABLED: 1
+      SHOPWARE_ES_LISTING_ENABLED: 1
+      SHOPWARE_ES_INDEX_PREFIX: sw_tweakspot
+      SHOPWARE_HTTP_CACHE_ENABLED: 1
+      SHOPWARE_HTTP_DEFAULT_TTL: 7200
+      TRUSTED_PROXIES: REMOTE_ADDR
+    volumes:
+      - shopware_media:/var/www/html/public/media
+      - shopware_thumbnail:/var/www/html/public/thumbnail
+      - shopware_jwt:/var/www/html/config/jwt
+    expose:
+      - "8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      opensearch:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-r00t_sw_2024}
+      MARIADB_DATABASE: shopware
+      MARIADB_USER: shopware
+      MARIADB_PASSWORD: shopware
+    volumes:
+      - db_data:/var/lib/mysql
+    command:
+      - --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+      - --group_concat_max_len=320000
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+
+  opensearch:
+    image: opensearchproject/opensearch:2.12.0
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+      - DISABLE_SECURITY_PLUGIN=true
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - os_data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+volumes:
+  shopware_media:
+  shopware_thumbnail:
+  shopware_jwt:
+  db_data:
+  os_data:
