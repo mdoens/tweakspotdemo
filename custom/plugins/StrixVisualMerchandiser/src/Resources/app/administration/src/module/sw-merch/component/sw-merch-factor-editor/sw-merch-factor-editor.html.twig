@@ -1,0 +1,65 @@
+<div class="sw-merch-factor-editor">
+    <div class="sw-merch-factor-editor__header">
+        <h4>{{ $tc('sw-merch.factorEditor.title') }}</h4>
+        <div class="sw-merch-factor-editor__total" :class="{ 'sw-merch-factor-editor__total--valid': isValid, 'sw-merch-factor-editor__total--invalid': totalWeight !== 100 }">
+            {{ totalWeight }}% / 100%
+        </div>
+    </div>
+
+    <div class="sw-merch-factor-editor__factors">
+        <div v-for="(factor, index) in factors" :key="index" class="sw-merch-factor-editor__factor">
+            <mt-select
+                :model-value="factor.field"
+                :options="fieldOptions"
+                size="small"
+                class="sw-merch-factor-editor__field-select"
+                @update:model-value="(v) => onFieldChange(index, v)"
+            />
+
+            <div class="sw-merch-factor-editor__weight">
+                <input
+                    type="range"
+                    :value="factor.weight"
+                    min="0"
+                    max="100"
+                    step="5"
+                    class="sw-merch-factor-editor__slider"
+                    @input="onWeightChange(index, $event.target.value)"
+                />
+                <div class="sw-merch-factor-editor__weight-bar">
+                    <div
+                        class="sw-merch-factor-editor__weight-fill"
+                        :style="{ width: getWeightBarWidth(factor.weight), backgroundColor: getWeightBarColor(factor.weight) }"
+                    />
+                </div>
+                <span class="sw-merch-factor-editor__weight-value">{{ factor.weight }}%</span>
+            </div>
+
+            <mt-select
+                :model-value="factor.direction"
+                :options="directionOptions"
+                size="small"
+                class="sw-merch-factor-editor__direction-select"
+                @update:model-value="(v) => onDirectionChange(index, v)"
+            />
+
+            <mt-button size="small" variant="ghost-danger" @click="onRemoveFactor(index)">
+                <mt-icon name="regular-times-s" size="14" />
+            </mt-button>
+        </div>
+    </div>
+
+    <div class="sw-merch-factor-editor__actions">
+        <mt-button v-if="canAddFactor" size="small" variant="ghost" @click="onAddFactor">
+            + {{ $tc('sw-merch.factorEditor.addFactor') }}
+        </mt-button>
+        <mt-button v-if="factors.length > 1" size="small" variant="ghost" @click="onDistributeEvenly">
+            {{ $tc('sw-merch.factorEditor.distributeEvenly') }}
+        </mt-button>
+    </div>
+    <div v-if="!canAddFactor" class="sw-merch-factor-editor__max-warning">
+        <small class="text-warning">
+            {{ $tc('sw-merch.factorEditor.maxFactorsReached', 0, { max: maxFactors }) }}
+        </small>
+    </div>
+</div>

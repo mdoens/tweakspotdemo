@@ -1,0 +1,74 @@
+<sw-page class="sw-merch-overview">
+    <template #smart-bar-actions>
+        <sw-merch-preview
+            v-if="selectedCategoryId"
+            :category-id="selectedCategoryId"
+        />
+        <sw-merch-bulk-edit
+            v-if="false"
+            :category-id="selectedCategoryId"
+        />
+    </template>
+
+    <template #content>
+        <div class="sw-merch-overview__content">
+            <div class="sw-merch-overview__sidebar">
+                <sw-merch-category-tree
+                    @category-select="onCategorySelect"
+                />
+            </div>
+
+            <div class="sw-merch-overview__main" v-if="selectedCategoryId">
+                <div class="sw-merch-overview__toolbar">
+                    <mt-tabs
+                        :items="tabItems"
+                        @new-item-active="onTabChange"
+                    />
+                </div>
+
+                <div class="sw-merch-overview__tab-content">
+                    <sw-merch-rules
+                        v-if="activeTab === 'rules'"
+                        :category-id="selectedCategoryId"
+                    />
+                    <sw-merch-pins
+                        v-if="activeTab === 'pins'"
+                        :category-id="selectedCategoryId"
+                    />
+                    <sw-merch-grid
+                        v-if="activeTab === 'grid'"
+                        :category-id="selectedCategoryId"
+                    />
+                    <sw-merch-filters
+                        v-if="activeTab === 'filters'"
+                        :category-id="selectedCategoryId"
+                    />
+                    <sw-merch-sorting-templates
+                        v-if="activeTab === 'sorting'"
+                        :category-id="selectedCategoryId"
+                    />
+                    <sw-merch-personalization
+                        v-if="activeTab === 'personalization'"
+                        :category-id="selectedCategoryId"
+                    />
+                    <sw-merch-analytics
+                        v-if="activeTab === 'analytics'"
+                        :category-id="selectedCategoryId"
+                    />
+                    <sw-merch-audit-log
+                        v-if="activeTab === 'audit'"
+                        :category-id="selectedCategoryId"
+                    />
+                </div>
+            </div>
+
+            <div class="sw-merch-overview__empty" v-else>
+                <div class="sw-merch-overview__empty-content">
+                    <mt-icon name="regular-shopping-bag" size="64" />
+                    <h2>{{ $tc('sw-merch.general.title') }}</h2>
+                    <p>{{ $tc('sw-merch.general.selectCategory') }}</p>
+                </div>
+            </div>
+        </div>
+    </template>
+</sw-page>

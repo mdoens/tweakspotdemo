@@ -1,0 +1,189 @@
+.sw-merch-preview {
+    &__panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 420px;
+        height: 100vh;
+        background: #fff;
+        box-shadow: -4px 0 20px rgba(0, 0, 0, 0.12);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    &__topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid #e8ecf0;
+        flex-shrink: 0;
+
+        h3 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+    }
+
+    &__toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 16px;
+        border-bottom: 1px solid #e8ecf0;
+        background: #f9fafb;
+        flex-shrink: 0;
+
+        .mt-select {
+            flex: 1;
+            min-width: 0;
+        }
+    }
+
+    &__rules-info {
+        padding: 8px 16px;
+        background: #eff6ff;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    &__rule-badge {
+        display: inline-block;
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 2px 6px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    &__loader {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__grid {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        align-content: start;
+    }
+
+    &__product {
+        position: relative;
+        border: 1px solid #d1d9e0;
+        border-radius: 8px;
+        padding: 8px;
+        text-align: center;
+        min-width: 0;
+
+        &--pinned {
+            border-color: #189eff;
+            background: rgba(24, 158, 255, 0.03);
+        }
+    }
+
+    &__product-position {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 20px;
+        height: 20px;
+        background: #f0f2f5;
+        border-radius: 50%;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #758698;
+    }
+
+    &__pin-badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        background: #189eff;
+        color: #fff;
+        padding: 1px 5px;
+        border-radius: 8px;
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+    &__product-image {
+        width: 100%;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 6px;
+        background: #f9fafb;
+        border-radius: 4px;
+        overflow: hidden;
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    &__product-name {
+        font-size: 11px;
+        font-weight: 600;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+        max-height: 2.6em;
+        word-break: break-word;
+    }
+
+    &__product-number {
+        font-size: 9px;
+        color: #9ca3af;
+        margin-top: 1px;
+        font-family: monospace;
+    }
+
+    &__product-price {
+        font-size: 10px;
+        color: #758698;
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__empty {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #758698;
+    }
+}
+
+.slide-enter-active, .slide-leave-active {
+    transition: transform 0.25s ease;
+}
+.slide-enter-from, .slide-leave-to {
+    transform: translateX(100%);
+}

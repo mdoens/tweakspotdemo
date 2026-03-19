@@ -1,0 +1,117 @@
+{% sw_extends '@Storefront/storefront/component/listing/filter-panel.html.twig' %}
+
+{#
+    Override the filter panel to pass merch_filter_config extensions from aggregation
+    objects down to the individual filter sub-templates.
+
+    The FilterOverrideService adds an ArrayStruct extension named "merch_filter_config"
+    to each aggregation with: displayType, collapsed, customLabel, helpText, maxValues, position.
+    It also reorders aggregations by position and removes inactive/invisible filters.
+
+    This override extracts the config and passes it as a `merchFilterConfig` variable
+    to each sw_include so the sub-templates can render collapsed state, custom labels,
+    and help text.
+#}
+
+{% block component_filter_panel_item_manufacturer %}
+    {% set manufacturers = listing.aggregations.get('manufacturer') %}
+    {% if not manufacturers.entities is empty %}
+        {% set manufacturersSorted = manufacturers.entities|sort((a, b) => a.translated.name|lower <=> b.translated.name|lower) %}
+        {% set merchFilterConfig = manufacturers.extensions.merch_filter_config|default(null) %}
+
+        {% sw_include '@Storefront/storefront/component/listing/filter/filter-multi-select.html.twig' with {
+            elements: manufacturersSorted,
+            sidebar: sidebar,
+            name: 'manufacturer',
+            displayName: merchFilterConfig and merchFilterConfig.customLabel
+                ? (merchFilterConfig.customLabel[app.request.locale[:2]] ?? merchFilterConfig.customLabel.en ?? ('listing.filterManufacturerDisplayName'|trans|sw_sanitize))
+                : ('listing.filterManufacturerDisplayName'|trans|sw_sanitize),
+            ariaLabel: 'listing.filterByManufacturerAriaLabel'|trans|sw_sanitize,
+            merchFilterConfig: merchFilterConfig
+        } %}
+    {% endif %}
+{% endblock %}
+
+{% block component_filter_panel_item_properties %}
+    {% set properties = listing.aggregations.get('properties') %}
+
+    {% if not properties.entities is empty %}
+        {% for property in properties.entities %}
+            {% set merchFilterConfig = property.extensions.merch_filter_config|default(null) %}
+
+            {% sw_include '@Storefront/storefront/component/listing/filter/filter-property-select.html.twig' with {
+                elements: property.options,
+                sidebar: sidebar,
+                name: 'properties',
+                displayName: merchFilterConfig and merchFilterConfig.customLabel
+                    ? (merchFilterConfig.customLabel[app.request.locale[:2]] ?? merchFilterConfig.customLabel.en ?? property.translated.name)
+                    : property.translated.name,
+                displayType: property.displayType,
+                pluginSelector: 'filter-property-select',
+                propertyName: property.translated.name,
+                ariaLabel: 'listing.filterByAriaLabel'|trans({'%name%': property.translated.name})|sw_sanitize,
+                merchFilterConfig: merchFilterConfig
+            } %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block component_filter_panel_item_price %}
+    {% set price = listing.aggregations.get('price') %}
+
+    {% if price.min is not null and price.max is not null %}
+        {% set merchFilterConfig = price.extensions.merch_filter_config|default(null) %}
+
+        {% sw_include '@Storefront/storefront/component/listing/filter/filter-range.html.twig' with {
+            sidebar: sidebar,
+            name: 'price',
+            minKey: 'min-price',
+            maxKey: 'max-price',
+            lowerBound: 0,
+            displayName: merchFilterConfig and merchFilterConfig.customLabel
+                ? (merchFilterConfig.customLabel[app.request.locale[:2]] ?? merchFilterConfig.customLabel.en ?? ('listing.filterPriceDisplayName'|trans|sw_sanitize))
+                : ('listing.filterPriceDisplayName'|trans|sw_sanitize),
+            minInputValue: 0,
+            maxInputValue: price.max,
+            ariaLabel: 'listing.filterByPriceAriaLabel'|trans|sw_sanitize,
+            merchFilterConfig: merchFilterConfig
+        } %}
+    {% endif %}
+{% endblock %}
+
+{% block component_filter_panel_item_rating_select %}
+    {% set rating = listing.aggregations.get('rating') %}
+
+    {% if rating.max > 0 %}
+        {% set merchFilterConfig = rating.extensions.merch_filter_config|default(null) %}
+
+        {% sw_include '@Storefront/storefront/component/listing/filter/filter-rating-select.html.twig' with {
+            sidebar: sidebar,
+            name: 'rating',
+            pluginSelector: 'filter-rating-select',
+            displayName: merchFilterConfig and merchFilterConfig.customLabel
+                ? (merchFilterConfig.customLabel[app.request.locale[:2]] ?? merchFilterConfig.customLabel.en ?? ('listing.filterRatingDisplayName'|trans|sw_sanitize))
+                : ('listing.filterRatingDisplayName'|trans|sw_sanitize),
+            ariaLabel: 'listing.filterByRatingAriaLabel'|trans|sw_sanitize,
+            merchFilterConfig: merchFilterConfig
+        } %}
+    {% endif %}
+{% endblock %}
+
+{% block component_filter_panel_item_shipping_free %}
+    {% set shippingFree = listing.aggregations.get('shipping-free') %}
+
+    {% if shippingFree.max > 0 %}
+        {% set merchFilterConfig = shippingFree.extensions.merch_filter_config|default(null) %}
+
+        {% sw_include '@Storefront/storefront/component/listing/filter/filter-boolean.html.twig' with {
+            name: 'shipping-free',
+            displayName: merchFilterConfig and merchFilterConfig.customLabel
+                ? (merchFilterConfig.customLabel[app.request.locale[:2]] ?? merchFilterConfig.customLabel.en ?? ('listing.filterFreeShippingDisplayName'|trans|sw_sanitize))
+                : ('listing.filterFreeShippingDisplayName'|trans|sw_sanitize),
+            altText: 'listing.filterFreeShippingAltText'|trans|sw_sanitize,
+            altTextActive: 'listing.filterFreeShippingAltTextActive'|trans|sw_sanitize,
+            merchFilterConfig: merchFilterConfig
+        } %}
+    {% endif %}
+{% endblock %}

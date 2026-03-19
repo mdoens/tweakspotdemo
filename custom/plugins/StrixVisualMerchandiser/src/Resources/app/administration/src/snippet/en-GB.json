@@ -1,0 +1,352 @@
+{
+    "sw-merch": {
+        "general": {
+            "title": "Merchandising",
+            "description": "Visual Merchandiser Pro",
+            "selectCategory": "Select a category to manage merchandising",
+            "save": "Save",
+            "cancel": "Cancel",
+            "delete": "Delete",
+            "edit": "Edit",
+            "close": "Close",
+            "confirm": "Confirm",
+            "active": "Active",
+            "inactive": "Inactive",
+            "name": "Name",
+            "grid": "Grid",
+            "noData": "No data available",
+            "previous": "Previous",
+            "next": "Next",
+            "change": "Change",
+            "unlink": "Unlink",
+            "all": "All",
+            "addFilter": "Add Filter",
+            "addSortOption": "Add Sort Option",
+            "exportCsv": "Export CSV",
+            "selectProduct": "Select Product",
+            "searchPlaceholder": "Search...",
+            "linkRule": "Link a rule...",
+            "linkTemplate": "Link a template...",
+            "filterByType": "Filter by type",
+            "allTypes": "All types",
+            "nameRequired": "Name is required",
+            "selectProductRequired": "Please select a product"
+        },
+        "tabs": {
+            "rules": "Rules",
+            "pins": "Pins",
+            "filters": "Filter Templates",
+            "sorting": "Sorting Templates",
+            "personalization": "Personalization",
+            "analytics": "Analytics",
+            "grid": "Grid",
+            "auditLog": "Audit Log",
+            "bulkEdit": "Bulk Edit",
+            "preview": "Preview"
+        },
+        "rules": {
+            "title": "Rules",
+            "create": "Create Rule",
+            "editRule": "Edit Rule",
+            "categoryRules": "Category Rules",
+            "allRulesGlobal": "All Rules (Global)",
+            "noLinkedRules": "No rules linked to this category",
+            "duplicate": "Duplicate",
+            "duplicateSuccess": "Rule duplicated (inactive)",
+            "ruleCreated": "Rule created",
+            "ruleUpdated": "Rule updated",
+            "ruleDeleted": "Rule deleted",
+            "ruleLinked": "Rule linked to category",
+            "ruleUnlinked": "Rule unlinked",
+            "failedToSave": "Failed to save rule",
+            "failedToDelete": "Failed to delete rule",
+            "failedToLink": "Failed to link rule",
+            "failedToUnlink": "Failed to unlink rule",
+            "failedToDuplicate": "Failed to duplicate rule",
+            "confirmDelete": "Confirm Delete",
+            "confirmDeleteMessage": "This will also remove all category links for this rule. This action cannot be undone.",
+            "applyToChildren": "Apply to children",
+            "applyToChildrenTooltip": "Link this rule to all subcategories of the current category",
+            "applyToChildrenConfirm": "Link rule \"{rule}\" to {count} child categories?",
+            "noChildCategories": "This category has no child categories.",
+            "alreadyLinkedToAll": "Rule is already linked to all child categories.",
+            "appliedToChildren": "Rule \"{rule}\" linked to {count} child categories.",
+            "failedToApplyChildren": "Failed to apply rule to child categories.",
+            "boostConfig": "Boost Configuration",
+            "buryConfig": "Bury Configuration",
+            "formulaSteps": "Formula Order Steps",
+            "formulaStepsDesc": "Configure step-by-step ordering rules",
+            "types": {
+                "weighted_sort": "Weighted Sort",
+                "boost": "Boost",
+                "bury": "Bury",
+                "formula_order": "Formula Order"
+            },
+            "fields": {
+                "name": "Name",
+                "type": "Type",
+                "priority": "Priority",
+                "active": "Active",
+                "validFrom": "Valid from",
+                "validUntil": "Valid until",
+                "field": "Field",
+                "operator": "Operator",
+                "value": "Value",
+                "multiplier": "Multiplier"
+            },
+            "operators": {
+                "equals": "Equals",
+                "notEquals": "Not Equals",
+                "contains": "Contains"
+            },
+            "helpText": {
+                "type": "Weighted Sort: combine multiple factors with weights. Boost: multiply score for matching products. Bury: reduce score for matching products. Formula Order: strict step-by-step ordering.",
+                "priority": "Higher priority rules are applied first. When multiple rules of the same type exist, only the highest priority is used.",
+                "active": "Inactive rules are saved but not applied to the storefront. Use scheduling to auto-activate later.",
+                "validFrom": "Rule becomes active automatically on this date. Leave empty for immediate activation.",
+                "validUntil": "Rule is automatically deactivated after this date. Leave empty for no expiration.",
+                "boostMultiplier": "Score multiplier for matching products. 2.0 = twice as likely to appear higher. Range: 1.0 - 5.0.",
+                "buryMultiplier": "Score multiplier for matching products. 0.1 = pushed to the bottom. Range: 0.01 - 1.0.",
+                "field": "The OpenSearch product field to match against (e.g. manufacturer.name, tags, properties).",
+                "operator": "How to compare the field value. Equals = exact match, Contains = partial text match."
+            },
+            "fieldOptions": {
+                "manufacturer": "Manufacturer",
+                "tags": "Tags"
+            },
+            "validation": {
+                "fieldRequired": "Please select a field for the criteria.",
+                "valueRequired": "Please select a value for the criteria.",
+                "factorsRequired": "At least one factor is required.",
+                "weightsNot100": "Factor weights add up to {total}% — should be 100%."
+            }
+        },
+        "pins": {
+            "title": "Pins",
+            "create": "Add Pin",
+            "editPin": "Edit Pin",
+            "noPins": "No pins configured for this category",
+            "pinCreated": "Pin created",
+            "pinUpdated": "Pin updated",
+            "pinDeleted": "Pin deleted",
+            "failedToSave": "Failed to save pin",
+            "failedToDelete": "Failed to delete pin",
+            "failedToUpdate": "Failed to update pin",
+            "activate": "Activate",
+            "deactivate": "Deactivate",
+            "customLabelEn": "Custom Label (EN)",
+            "customLabelNl": "Custom Label (NL)",
+            "customLabelDe": "Custom Label (DE)",
+            "from": "From",
+            "until": "Until",
+            "fields": {
+                "product": "Product",
+                "position": "Position",
+                "label": "Label",
+                "active": "Active"
+            },
+            "labels": {
+                "sponsored": "Sponsored",
+                "new_arrival": "New Arrival",
+                "staff_pick": "Staff Pick",
+                "sale": "Sale",
+                "trending": "Trending",
+                "custom": "Custom"
+            },
+            "helpText": {
+                "position": "Fixed position in the product listing. Position 1 = first product on page 1. Position 25 = first product on page 2 (with page size 24). If two pins share a position, the lowest product ID wins.",
+                "label": "Visual badge displayed on the product in the storefront. Choose 'Custom' to enter your own multilingual label text.",
+                "active": "Inactive pins are saved but not shown on the storefront."
+            }
+        },
+        "filters": {
+            "title": "Filter Templates",
+            "create": "Create Template",
+            "editTemplate": "Edit Template",
+            "category": "Category",
+            "noLinkedTemplate": "No filter template linked",
+            "allTemplatesGlobal": "All Filter Templates (Global)",
+            "templateSaved": "Template saved",
+            "templateDeleted": "Template deleted",
+            "templateLinked": "Template linked",
+            "templateUnlinked": "Template unlinked",
+            "failedToSave": "Failed to save",
+            "failedToDelete": "Failed to delete",
+            "failedToLink": "Failed to link template",
+            "failedToUnlink": "Failed to unlink",
+            "failedToUpdateMode": "Failed to update mode",
+            "filters": "Filters",
+            "propertyGroup": "Property Group",
+            "displayType": "Display Type",
+            "position": "Position",
+            "collapsed": "Collapsed",
+            "overrideMode": {
+                "active": "Active",
+                "inherit": "Inherit",
+                "disabled": "Disabled"
+            },
+            "displayTypes": {
+                "checkbox": "Checkbox",
+                "link": "Link",
+                "colorbox": "Color Box",
+                "slider": "Slider",
+                "bucket": "Bucket"
+            },
+            "helpText": {
+                "overrideMode": "Active: this template replaces Shopware's default filters for this category. Inherit: uses the parent category's template (walks up the tree). Disabled: forces Shopware's default filters, even if a parent has an active template.",
+                "displayType": "How the filter is rendered in the storefront. Checkbox = multi-select, Link = single-select, Colorbox = color swatches, Slider = range, Bucket = predefined ranges.",
+                "collapsed": "If enabled, this filter group starts collapsed (closed) in the storefront sidebar.",
+                "position": "Display order of this filter in the storefront sidebar. Lower numbers appear first."
+            }
+        },
+        "sorting": {
+            "title": "Sorting Templates",
+            "create": "Create Template",
+            "editTemplate": "Edit Template",
+            "category": "Category",
+            "noLinkedTemplate": "No sorting template linked",
+            "allTemplatesGlobal": "All Sorting Templates (Global)",
+            "templateSaved": "Template saved",
+            "templateDeleted": "Template deleted",
+            "templateLinked": "Template linked",
+            "templateUnlinked": "Template unlinked",
+            "failedToSave": "Failed to save",
+            "failedToDelete": "Failed to delete",
+            "failedToLink": "Failed to link",
+            "failedToUnlink": "Failed to unlink",
+            "failedToUpdateMode": "Failed to update mode",
+            "sortOptions": "Sort Options",
+            "sortTypes": {
+                "merch_rule": "Merchandising Rule",
+                "shopware": "Shopware Field"
+            },
+            "shopwareFields": {
+                "price": "Price",
+                "name": "Name",
+                "createdAt": "Created At",
+                "ratingAverage": "Rating",
+                "sales": "Sales"
+            },
+            "labelEn": "Label (EN)",
+            "type": "Type",
+            "field": "Field",
+            "direction": "Direction",
+            "rule": "Rule",
+            "helpText": {
+                "overrideMode": "Active: this template replaces Shopware's default sorting for this category. Inherit: uses the parent category's template. Disabled: forces Shopware's default sorting.",
+                "sortType": "Merchandising Rule: uses a merch rule's scoring algorithm. Shopware Field: sorts by a standard product field (price, name, etc.)."
+            }
+        },
+        "personalization": {
+            "title": "Personalization",
+            "segments": "Customer Segments",
+            "createSegment": "Create Segment",
+            "editSegment": "Edit Segment",
+            "noSegments": "No customer segments configured",
+            "segmentSaved": "Segment saved",
+            "segmentDeleted": "Segment deleted",
+            "failedToSave": "Failed to save segment",
+            "failedToDelete": "Failed to delete segment",
+            "hybridCachingTitle": "Hybrid Caching",
+            "hybridCachingDesc": "Guest visitors get full HTTP cache (no personalization). Logged-in customers get personalized product ordering based on their segment membership. Global settings available in Settings > Plugins > Visual Merchandiser Pro.",
+            "members": "members",
+            "boost": "Boost",
+            "boostFactor": "Boost Factor",
+            "types": {
+                "purchase_history": "Purchase History",
+                "click_behavior": "Click Behavior",
+                "filter_behavior": "Filter Behavior",
+                "combined": "Combined"
+            },
+            "helpText": {
+                "type": "Purchase History: segments customers by order frequency and recency. Click Behavior: segments by product click engagement. Filter Behavior: segments by filter usage patterns. Combined: merges multiple segments with configurable weights.",
+                "boostFactor": "Score multiplier applied to products for customers in this segment. 1.0 = no effect. 2.0 = double the relevance score. Only affects logged-in customers.",
+                "active": "Inactive segments are saved but not used for personalization. Membership is still calculated nightly."
+            }
+        },
+        "analytics": {
+            "title": "Analytics",
+            "clicks": "Click Events",
+            "ctr": "Click-Through Rate",
+            "productsTracked": "Products Tracked",
+            "totalClicks": "Total Clicks",
+            "avgCtrLabel": "Avg CTR",
+            "addToCartRate": "Add-to-Cart Rate",
+            "avgPosition": "Avg Position",
+            "productId": "Product ID",
+            "date": "Date",
+            "noClickData": "No click data",
+            "positionHeatmap": "Position Heatmap (1-24)",
+            "heatmapLow": "Low",
+            "heatmapHigh": "High",
+            "periods": {
+                "7": "Last 7 days",
+                "30": "Last 30 days",
+                "90": "Last 90 days"
+            }
+        },
+        "auditLog": {
+            "title": "Audit Log",
+            "noEntries": "No audit log entries",
+            "date": "Date",
+            "entity": "Entity",
+            "action": "Action",
+            "user": "User",
+            "details": "Details",
+            "view": "View",
+            "changeDetails": "Change Details",
+            "entityTypes": {
+                "strix_merch_rule": "Rule",
+                "strix_merch_pin": "Pin",
+                "strix_merch_filter_template": "Filter Template",
+                "strix_merch_sorting_template": "Sorting Template",
+                "strix_merch_customer_segment": "Segment"
+            },
+            "actions": {
+                "create": "Created",
+                "update": "Updated",
+                "delete": "Deleted",
+                "activate": "Activated",
+                "deactivate": "Deactivated"
+            }
+        },
+        "bulkEdit": {
+            "title": "Bulk Edit Rules",
+            "noRules": "No rules to manage",
+            "selected": "selected",
+            "activate": "Activate",
+            "deactivate": "Deactivate",
+            "schedule": "Schedule",
+            "confirmBulkAction": "Confirm Bulk Action",
+            "activateConfirm": "Activate {count} rules?",
+            "deactivateConfirm": "Deactivate {count} rules?",
+            "deleteConfirm": "Delete {count} rules? This action cannot be undone. Junction records will also be removed.",
+            "scheduleConfirm": "Set scheduling for {count} rules:",
+            "status": "Status",
+            "bulkSuccess": "{count} rules {action}d"
+        },
+        "preview": {
+            "title": "Preview",
+            "storefrontPreview": "Storefront Preview",
+            "refresh": "Refresh",
+            "closePreview": "Close Preview",
+            "activeRules": "Active rules"
+        },
+        "grid": {
+            "pinConfirmTitle": "Confirm Pin",
+            "pinConfirmMessage": "Pin \"{product}\" at position {position}?"
+        },
+        "factorEditor": {
+            "title": "Weighted Sort Factors",
+            "addFactor": "Add Factor",
+            "distributeEvenly": "Distribute Evenly",
+            "maxFactorsReached": "Maximum {max} factors reached"
+        },
+        "productSearch": {
+            "title": "Select Product",
+            "searchPlaceholder": "Search by name, product number, or EAN...",
+            "noProducts": "No products found",
+            "typeToSearch": "Type at least 2 characters to search"
+        }
+    }
+}

@@ -1,0 +1,150 @@
+<div class="sw-merch-pins">
+    <mt-card>
+        <template #toolbar>
+            <div class="sw-merch-pins__toolbar">
+                <h3>{{ $tc('sw-merch.pins.title') }}</h3>
+                <mt-button
+                    v-if="canEdit"
+                    variant="primary"
+                    size="small"
+                    @click="onAddPin"
+                >
+                    {{ $tc('sw-merch.pins.create') }}
+                </mt-button>
+            </div>
+        </template>
+
+        <div v-if="isLoading" class="sw-merch-pins__loader">
+            <mt-loader size="30px" />
+        </div>
+
+        <div v-else-if="sortedPins.length === 0" class="sw-merch-pins__empty">
+            <mt-icon name="regular-flag" size="48" />
+            <p>No pins configured for this category</p>
+            <mt-button v-if="canEdit" variant="primary" size="small" @click="onAddPin">
+                {{ $tc('sw-merch.pins.create') }}
+            </mt-button>
+        </div>
+
+        <div v-else class="sw-merch-pins__list">
+            <div
+                v-for="pin in sortedPins"
+                :key="pin.id"
+                class="sw-merch-pins__item"
+                :class="{
+                    'sw-merch-pins__item--inactive': !pin.active,
+                    'sw-merch-pins__item--scheduled': isScheduled(pin),
+                    'sw-merch-pins__item--expired': isExpired(pin),
+                }"
+            >
+                <div class="sw-merch-pins__item-position">
+                    {{ pin.position }}
+                </div>
+
+                <div class="sw-merch-pins__item-image">
+                    <img v-if="getProductImage(pin)" :src="getProductImage(pin)" :alt="getProductName(pin)" />
+                    <mt-icon v-else name="regular-image" size="32" />
+                </div>
+
+                <div class="sw-merch-pins__item-info">
+                    <div class="sw-merch-pins__item-name">{{ getProductName(pin) }}</div>
+                    <div class="sw-merch-pins__item-meta">
+                        <span class="sw-merch-pins__badge" :class="'sw-merch-pins__badge--' + (pin.label || 'sponsored')">
+                            {{ getLabelDisplay(pin.label || 'sponsored') }}
+                        </span>
+                        <span v-if="!pin.active" class="sw-merch-pins__status sw-merch-pins__status--inactive">
+                            {{ $tc('sw-merch.general.inactive') }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="sw-merch-pins__item-schedule" v-if="pin.validFrom || pin.validUntil">
+                    <div v-if="pin.validFrom" class="sw-merch-pins__date">
+                        <mt-icon name="regular-chevron-right-xxs" size="10" />
+                        {{ formatDate(pin.validFrom) }}
+                    </div>
+                    <div v-if="pin.validUntil" class="sw-merch-pins__date">
+                        <mt-icon name="regular-times-s" size="10" />
+                        {{ formatDate(pin.validUntil) }}
+                    </div>
+                </div>
+
+                <div class="sw-merch-pins__item-actions">
+                    <mt-button size="small" variant="ghost" @click="onToggleActive(pin)">
+                        {{ pin.active ? $tc('sw-merch.pins.deactivate') : $tc('sw-merch.pins.activate') }}
+                    </mt-button>
+                    <mt-button v-if="canEdit" size="small" variant="ghost" @click="onEditPin(pin)">
+                        <mt-icon name="regular-pencil-s" size="16" />
+                    </mt-button>
+                    <mt-button v-if="canDelete" size="small" variant="ghost-danger" @click="onDeletePin(pin)">
+                        <mt-icon name="regular-trash" size="16" />
+                    </mt-button>
+                </div>
+            </div>
+        </div>
+    </mt-card>
+
+    <!-- Create/Edit Modal -->
+    <sw-modal
+        v-if="showCreateModal"
+        :title="editingPin ? 'Edit Pin' : $tc('sw-merch.pins.create')"
+        @modal-close="onCloseModal"
+    >
+        <div class="sw-merch-pins__modal-content">
+            <div class="sw-merch-pins__product-select">
+                <label>{{ $tc('sw-merch.pins.fields.product') }}</label>
+                <div v-if="selectedProduct" class="sw-merch-pins__selected-product">
+                    <span>{{ selectedProduct.translated?.name || selectedProduct.name }}</span>
+                    <mt-button v-if="!editingPin" size="small" variant="ghost" @click="onOpenProductSearch">
+                        Change
+                    </mt-button>
+                </div>
+                <mt-button v-else variant="ghost" @click="onOpenProductSearch">
+                    Select Product
+                </mt-button>
+            </div>
+
+            <mt-number-field
+                :label="$tc('sw-merch.pins.fields.position')" :help-text="$tc('sw-merch.pins.helpText.position')" 
+                :model-value="newPin.position"
+                @update:model-value="newPin.position = $event"
+                :min="1"
+            />
+
+            <!-- S7.7: Position conflict warning -->
+            <div v-if="hasPositionConflict(newPin.position)" style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fef3c7;border:1px solid #f59e0b;border-radius:6px;font-size:12px;color:#92400e">
+                <mt-icon name="regular-exclamation-triangle" size="14" />
+                {{ getPositionConflictMessage(newPin.position) }}
+            </div>
+
+            <mt-select
+                :label="$tc('sw-merch.pins.fields.label')" :help-text="$tc('sw-merch.pins.helpText.label')" 
+                :model-value="newPin.label"
+                @update:model-value="newPin.label = $event"
+                :options="labelOptions"
+            />
+
+            <template v-if="newPin.label === 'custom'">
+                <mt-text-field label="Custom Label (EN)" :model-value="newPin.customLabel.en" @update:model-value="newPin.customLabel.en = $event" />
+                <mt-text-field label="Custom Label (NL)" :model-value="newPin.customLabel.nl" @update:model-value="newPin.customLabel.nl = $event" />
+                <mt-text-field label="Custom Label (DE)" :model-value="newPin.customLabel.de" @update:model-value="newPin.customLabel.de = $event" />
+            </template>
+
+            <mt-switch :label="$tc('sw-merch.pins.fields.active')" :help-text="$tc('sw-merch.pins.helpText.active')" :model-value="newPin.active" @update:model-value="newPin.active = $event" />
+            <sw-datepicker :label="$tc('sw-merch.rules.fields.validFrom')" :model-value="newPin.validFrom" @update:model-value="newPin.validFrom = $event" />
+            <sw-datepicker :label="$tc('sw-merch.rules.fields.validUntil')" :model-value="newPin.validUntil" @update:model-value="newPin.validUntil = $event" />
+        </div>
+
+        <template #modal-footer>
+            <mt-button variant="ghost" @click="onCloseModal">{{ $tc('sw-merch.general.cancel') }}</mt-button>
+            <mt-button variant="primary" @click="onSavePin">{{ $tc('sw-merch.general.save') }}</mt-button>
+        </template>
+    </sw-modal>
+
+    <!-- Product Search -->
+    <sw-merch-product-search
+        v-if="showProductSearch"
+        @product-selected="onProductSelected"
+        @close="onCloseProductSearch"
+    />
+</div>

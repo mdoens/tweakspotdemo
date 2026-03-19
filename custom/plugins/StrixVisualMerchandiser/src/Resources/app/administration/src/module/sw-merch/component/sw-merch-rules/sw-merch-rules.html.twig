@@ -1,0 +1,270 @@
+<div class="sw-merch-rules">
+    <!-- S7.7: Boost/Bury overlap warning -->
+    <div v-if="overlapWarning" class="sw-merch-rules__overlap-warning">
+        <mt-icon name="regular-exclamation-triangle" size="16" />
+        {{ overlapWarning }}
+    </div>
+
+    <!-- Per-category linked rules -->
+    <mt-card>
+        <template #toolbar>
+            <div class="sw-merch-rules__toolbar">
+                <h3>{{ $tc('sw-merch.rules.title') }} — {{ $tc('sw-merch.rules.categoryRules') }}</h3>
+                <mt-select
+                    v-if="canEdit && unlinkedRules.length > 0"
+                    :placeholder="$tc('sw-merch.general.linkRule')"
+                    :options="unlinkedRules.map(r => ({ value: r.id, label: r.name }))"
+                    @update:model-value="onLinkRule"
+                    size="small"
+                />
+            </div>
+        </template>
+
+        <div v-if="isLoading" class="sw-merch-rules__loader">
+            <mt-loader size="30px" />
+        </div>
+
+        <div v-else-if="linkedRules.length === 0" class="sw-merch-rules__empty">
+            <p>No rules linked to this category</p>
+        </div>
+
+        <div v-else class="sw-merch-rules__list">
+            <div v-for="rule in linkedRules" :key="rule.id" class="sw-merch-rules__item">
+                <span
+                    class="sw-merch-rules__type-badge"
+                    :style="{ backgroundColor: getTypeColor(rule.type) }"
+                >
+                    {{ getTypeLabel(rule.type) }}
+                </span>
+                <div class="sw-merch-rules__item-info">
+                    <div class="sw-merch-rules__item-name">{{ rule.name }}</div>
+                    <small>Priority: {{ rule.priority }} | {{ rule.active ? 'Active' : 'Inactive' }}</small>
+                </div>
+                <div class="sw-merch-rules__item-actions">
+                    <mt-button v-if="canEdit" size="small" variant="ghost" @click="onApplyToChildren(rule)" :title="$tc('sw-merch.rules.applyToChildrenTooltip')">
+                        <mt-icon name="regular-layer-group" size="16" />
+                        {{ $tc('sw-merch.rules.applyToChildren') }}
+                    </mt-button>
+                    <mt-button v-if="canEdit" size="small" variant="ghost" @click="onEditRule(rule)">
+                        <mt-icon name="regular-pencil-s" size="16" />
+                    </mt-button>
+                    <mt-button v-if="canEdit" size="small" variant="ghost-danger" @click="onUnlinkRule(rule)">
+                        <mt-icon name="regular-trash" size="14" />
+                    </mt-button>
+                </div>
+            </div>
+        </div>
+    </mt-card>
+
+    <!-- Global rule management -->
+    <mt-card>
+        <template #toolbar>
+            <div class="sw-merch-rules__toolbar">
+                <h3>All Rules (Global)</h3>
+                <div class="sw-merch-rules__toolbar-actions">
+                    <mt-text-field
+                        :model-value="searchTerm"
+                        placeholder="Search rules..."
+                        size="small"
+                        @update:model-value="(val) => searchTerm = val"
+                    />
+                    <mt-select
+                        :model-value="typeFilter"
+                        placeholder="Filter by type"
+                        :options="[{ value: null, label: 'All types' }, ...typeOptions]"
+                        size="small"
+                        @update:model-value="(val) => typeFilter = val"
+                    />
+                    <mt-button v-if="canEdit" variant="primary" size="small" @click="onCreateRule">
+                        {{ $tc('sw-merch.rules.create') }}
+                    </mt-button>
+                </div>
+            </div>
+        </template>
+
+        <div class="sw-merch-rules__list">
+            <div v-for="rule in filteredRules" :key="rule.id" class="sw-merch-rules__item">
+                <span
+                    class="sw-merch-rules__type-badge"
+                    :style="{ backgroundColor: getTypeColor(rule.type) }"
+                >
+                    {{ getTypeLabel(rule.type) }}
+                </span>
+                <div class="sw-merch-rules__item-info">
+                    <div class="sw-merch-rules__item-name">{{ rule.name }}</div>
+                    <small>Priority: {{ rule.priority }} | {{ rule.active ? 'Active' : 'Inactive' }}</small>
+                </div>
+                <div class="sw-merch-rules__item-actions">
+                    <!-- S7.6: Duplicate button -->
+                    <mt-button v-if="canEdit" size="small" variant="ghost" @click="onDuplicateRule(rule)" title="Duplicate">
+                        <mt-icon name="regular-duplicate" size="16" />
+                    </mt-button>
+                    <mt-button v-if="canEdit" size="small" variant="ghost" @click="onEditRule(rule)">
+                        <mt-icon name="regular-pencil-s" size="16" />
+                    </mt-button>
+                    <mt-button v-if="canDelete" size="small" variant="ghost-danger" @click="onDeleteRule(rule)">
+                        <mt-icon name="regular-trash" size="16" />
+                    </mt-button>
+                </div>
+            </div>
+        </div>
+    </mt-card>
+
+    <!-- Create/Edit Rule Modal -->
+    <sw-modal
+        v-if="showCreateModal"
+        :key="'rule-modal-' + modalKey"
+        :title="editingRule ? 'Edit Rule' : $tc('sw-merch.rules.create')"
+        variant="large"
+        @modal-close="onCloseModal"
+    >
+        <div class="sw-merch-rules__modal-content">
+            <mt-text-field
+                :label="$tc('sw-merch.rules.fields.name')"
+                :model-value="newRule.name"
+                @update:model-value="newRule.name = $event"
+                required
+            />
+
+            <mt-select
+                :label="$tc('sw-merch.rules.fields.type')"
+                :help-text="$tc('sw-merch.rules.helpText.type')"
+                :model-value="newRule.type"
+                :options="typeOptions"
+                :disabled="!!editingRule"
+                @update:model-value="onTypeChange"
+            />
+
+            <mt-number-field
+                :label="$tc('sw-merch.rules.fields.priority')"
+                :help-text="$tc('sw-merch.rules.helpText.priority')"
+                :model-value="newRule.priority"
+                @update:model-value="newRule.priority = $event"
+            />
+
+            <mt-switch
+                :label="$tc('sw-merch.rules.fields.active')"
+                :help-text="$tc('sw-merch.rules.helpText.active')"
+                :model-value="newRule.active"
+                @update:model-value="newRule.active = $event"
+            />
+
+            <!-- Type-specific config editors -->
+            <template v-if="newRule.type === 'weighted_sort'">
+                <sw-merch-factor-editor :config="newRule.config" @update:config="(c) => newRule.config = c" />
+            </template>
+
+            <template v-if="newRule.type === 'boost'">
+                <h4>{{ $tc('sw-merch.rules.boostConfig') }}</h4>
+                <mt-select
+                    :label="$tc('sw-merch.rules.fields.field')"
+                    :help-text="$tc('sw-merch.rules.helpText.field')"
+                    :model-value="newRule.config.criteria.field"
+                    :options="boostFieldOptions"
+                    @update:model-value="onBoostFieldChange"
+                />
+                <mt-select
+                    v-if="getValueOptions()"
+                    :label="$tc('sw-merch.rules.fields.value')"
+                    :model-value="newRule.config.criteria.value"
+                    :options="getValueOptions()"
+                    @update:model-value="(v) => newRule.config.criteria.value = v"
+                />
+                <mt-text-field
+                    v-else
+                    :label="$tc('sw-merch.rules.fields.value')"
+                    :model-value="newRule.config.criteria.value"
+                    @update:model-value="newRule.config.criteria.value = $event"
+                    :placeholder="$tc('sw-merch.rules.helpText.operator')"
+                />
+                <mt-number-field label="Multiplier (1.0 - 5.0)" :help-text="$tc('sw-merch.rules.helpText.boostMultiplier')" :model-value="newRule.config.multiplier" @update:model-value="newRule.config.multiplier = $event" :min="1.0" :max="5.0" :step="0.1" />
+            </template>
+
+            <template v-if="newRule.type === 'bury'">
+                <h4>{{ $tc('sw-merch.rules.buryConfig') }}</h4>
+                <mt-select
+                    :label="$tc('sw-merch.rules.fields.field')"
+                    :help-text="$tc('sw-merch.rules.helpText.field')"
+                    :model-value="newRule.config.criteria.field"
+                    :options="boostFieldOptions"
+                    @update:model-value="onBoostFieldChange"
+                />
+                <mt-select
+                    v-if="getValueOptions()"
+                    :label="$tc('sw-merch.rules.fields.value')"
+                    :model-value="newRule.config.criteria.value"
+                    :options="getValueOptions()"
+                    @update:model-value="(v) => newRule.config.criteria.value = v"
+                />
+                <mt-text-field
+                    v-else
+                    :label="$tc('sw-merch.rules.fields.value')"
+                    :model-value="newRule.config.criteria.value"
+                    @update:model-value="newRule.config.criteria.value = $event"
+                    :placeholder="$tc('sw-merch.rules.helpText.operator')"
+                />
+                <mt-number-field label="Multiplier (0.01 - 1.0)" :help-text="$tc('sw-merch.rules.helpText.buryMultiplier')" :model-value="newRule.config.multiplier" @update:model-value="newRule.config.multiplier = $event" :min="0.01" :max="1.0" :step="0.01" />
+            </template>
+
+            <template v-if="newRule.type === 'formula_order'">
+                <h4>Formula Order Steps</h4>
+                <p>Configure step-by-step ordering rules</p>
+            </template>
+
+            <sw-datepicker :label="$tc('sw-merch.rules.fields.validFrom')" :help-text="$tc('sw-merch.rules.helpText.validFrom')" :model-value="newRule.validFrom" @update:model-value="newRule.validFrom = $event" />
+            <sw-datepicker :label="$tc('sw-merch.rules.fields.validUntil')" :help-text="$tc('sw-merch.rules.helpText.validUntil')" :model-value="newRule.validUntil" @update:model-value="newRule.validUntil = $event" />
+        </div>
+
+        <template #modal-footer>
+            <mt-button variant="ghost" @click="onCloseModal">{{ $tc('sw-merch.general.cancel') }}</mt-button>
+            <mt-button variant="primary" @click="onSaveRule">{{ $tc('sw-merch.general.save') }}</mt-button>
+        </template>
+    </sw-modal>
+
+    <!-- S7.7: Delete confirmation modal -->
+    <sw-modal
+        v-if="showDeleteConfirm"
+        title="Confirm Delete"
+        @modal-close="onCancelDelete"
+    >
+        <div style="padding:8px 0">
+            <p>
+                Delete rule <strong>"{{ deleteTarget?.name }}"</strong>?
+            </p>
+            <p style="color:#ff6b6b;font-size:13px">
+                This will also remove all category links for this rule. This action cannot be undone.
+            </p>
+        </div>
+
+        <template #modal-footer>
+            <mt-button variant="ghost" @click="onCancelDelete">{{ $tc('sw-merch.general.cancel') }}</mt-button>
+            <mt-button variant="danger" @click="onConfirmDelete">{{ $tc('sw-merch.general.delete') }}</mt-button>
+        </template>
+    </sw-modal>
+
+    <!-- Apply to children confirmation -->
+    <sw-modal
+        v-if="showApplyChildrenConfirm"
+        :title="$tc('sw-merch.rules.applyToChildren')"
+        @modal-close="onCancelApplyChildren"
+    >
+        <div style="padding:8px 0">
+            <div v-if="isLoadingChildren" style="text-align:center;padding:20px">
+                <mt-loader size="30px" />
+            </div>
+            <template v-else>
+                <p>{{ $tc('sw-merch.rules.applyToChildrenConfirm', { rule: applyChildrenTarget?.name, count: childCategoryIds.length }) }}</p>
+                <div v-if="childCategoryIds.length === 0" style="padding:8px 12px;background:#fef3c7;border:1px solid #f59e0b;border-radius:6px;font-size:12px;color:#92400e;margin-top:8px">
+                    {{ $tc('sw-merch.rules.noChildCategories') }}
+                </div>
+            </template>
+        </div>
+
+        <template #modal-footer>
+            <mt-button variant="ghost" @click="onCancelApplyChildren">{{ $tc('sw-merch.general.cancel') }}</mt-button>
+            <mt-button variant="primary" :disabled="childCategoryIds.length === 0 || isLoadingChildren" @click="onConfirmApplyChildren">
+                {{ $tc('sw-merch.rules.applyToChildren') }}
+            </mt-button>
+        </template>
+    </sw-modal>
+</div>

@@ -1,0 +1,352 @@
+{
+    "sw-merch": {
+        "general": {
+            "title": "Merchandising",
+            "description": "Visual Merchandiser Pro",
+            "selectCategory": "Wählen Sie eine Kategorie um Merchandising zu verwalten",
+            "save": "Speichern",
+            "cancel": "Abbrechen",
+            "delete": "Löschen",
+            "edit": "Bearbeiten",
+            "close": "Schließen",
+            "confirm": "Bestätigen",
+            "active": "Aktiv",
+            "inactive": "Inaktiv",
+            "name": "Name",
+            "grid": "Raster",
+            "noData": "Keine Daten verfügbar",
+            "previous": "Zurück",
+            "next": "Weiter",
+            "change": "Ändern",
+            "unlink": "Verknüpfung lösen",
+            "all": "Alle",
+            "addFilter": "Filter hinzufügen",
+            "addSortOption": "Sortieroption hinzufügen",
+            "exportCsv": "CSV exportieren",
+            "selectProduct": "Produkt auswählen",
+            "searchPlaceholder": "Suchen...",
+            "linkRule": "Regel verknüpfen...",
+            "linkTemplate": "Vorlage verknüpfen...",
+            "filterByType": "Nach Typ filtern",
+            "allTypes": "Alle Typen",
+            "nameRequired": "Name ist erforderlich",
+            "selectProductRequired": "Bitte wählen Sie ein Produkt"
+        },
+        "tabs": {
+            "rules": "Regeln",
+            "pins": "Pins",
+            "filters": "Filter-Vorlagen",
+            "sorting": "Sortier-Vorlagen",
+            "personalization": "Personalisierung",
+            "analytics": "Analysen",
+            "grid": "Raster",
+            "auditLog": "Audit-Log",
+            "bulkEdit": "Massenbearbeitung",
+            "preview": "Vorschau"
+        },
+        "rules": {
+            "title": "Regeln",
+            "create": "Regel erstellen",
+            "editRule": "Regel bearbeiten",
+            "categoryRules": "Kategorieregeln",
+            "allRulesGlobal": "Alle Regeln (Global)",
+            "noLinkedRules": "Keine Regeln mit dieser Kategorie verknüpft",
+            "duplicate": "Duplizieren",
+            "duplicateSuccess": "Regel dupliziert (inaktiv)",
+            "ruleCreated": "Regel erstellt",
+            "ruleUpdated": "Regel aktualisiert",
+            "ruleDeleted": "Regel gelöscht",
+            "ruleLinked": "Regel mit Kategorie verknüpft",
+            "ruleUnlinked": "Verknüpfung gelöst",
+            "failedToSave": "Speichern fehlgeschlagen",
+            "failedToDelete": "Löschen fehlgeschlagen",
+            "failedToLink": "Verknüpfen fehlgeschlagen",
+            "failedToUnlink": "Verknüpfung lösen fehlgeschlagen",
+            "failedToDuplicate": "Duplizieren fehlgeschlagen",
+            "confirmDelete": "Löschen bestätigen",
+            "confirmDeleteMessage": "Dadurch werden auch alle Kategorieverknüpfungen entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+            "applyToChildren": "Auf Unterkategorien anwenden",
+            "applyToChildrenTooltip": "Diese Regel mit allen Unterkategorien der aktuellen Kategorie verknüpfen",
+            "applyToChildrenConfirm": "Regel \"{rule}\" mit {count} Unterkategorien verknüpfen?",
+            "noChildCategories": "Diese Kategorie hat keine Unterkategorien.",
+            "alreadyLinkedToAll": "Regel ist bereits mit allen Unterkategorien verknüpft.",
+            "appliedToChildren": "Regel \"{rule}\" mit {count} Unterkategorien verknüpft.",
+            "failedToApplyChildren": "Anwenden auf Unterkategorien fehlgeschlagen.",
+            "boostConfig": "Boost-Konfiguration",
+            "buryConfig": "Unterdrücken-Konfiguration",
+            "formulaSteps": "Formel-Reihenfolge Schritte",
+            "formulaStepsDesc": "Schrittweise Sortierregeln konfigurieren",
+            "types": {
+                "weighted_sort": "Gewichtete Sortierung",
+                "boost": "Boost",
+                "bury": "Unterdrücken",
+                "formula_order": "Formel-Reihenfolge"
+            },
+            "fields": {
+                "name": "Name",
+                "type": "Typ",
+                "priority": "Priorität",
+                "active": "Aktiv",
+                "validFrom": "Gültig ab",
+                "validUntil": "Gültig bis",
+                "field": "Feld",
+                "operator": "Operator",
+                "value": "Wert",
+                "multiplier": "Multiplikator"
+            },
+            "operators": {
+                "equals": "Gleich",
+                "notEquals": "Ungleich",
+                "contains": "Enthält"
+            },
+            "helpText": {
+                "type": "Gewichtete Sortierung: mehrere Faktoren mit Gewichten kombinieren. Boost: Score für passende Produkte multiplizieren. Unterdrücken: Score für passende Produkte reduzieren. Formel-Reihenfolge: strikte schrittweise Sortierung.",
+                "priority": "Regeln mit höherer Priorität werden zuerst angewendet. Bei mehreren Regeln desselben Typs wird nur die höchste Priorität verwendet.",
+                "active": "Inaktive Regeln werden gespeichert, aber nicht auf der Storefront angewendet. Nutzen Sie die Planung für automatische Aktivierung.",
+                "validFrom": "Regel wird automatisch an diesem Datum aktiv. Leer lassen für sofortige Aktivierung.",
+                "validUntil": "Regel wird nach diesem Datum automatisch deaktiviert. Leer lassen für kein Ablaufdatum.",
+                "boostMultiplier": "Score-Multiplikator für passende Produkte. 2.0 = doppelt so wahrscheinlich höher angezeigt. Bereich: 1.0 - 5.0.",
+                "buryMultiplier": "Score-Multiplikator für passende Produkte. 0.1 = nach unten geschoben. Bereich: 0.01 - 1.0.",
+                "field": "Das OpenSearch-Produktfeld zum Abgleich (z.B. manufacturer.name, tags, properties).",
+                "operator": "Wie der Feldwert verglichen wird. Gleich = exakte Übereinstimmung, Enthält = teilweise Textübereinstimmung."
+            },
+            "fieldOptions": {
+                "manufacturer": "Hersteller",
+                "tags": "Tags"
+            },
+            "validation": {
+                "fieldRequired": "Bitte wählen Sie ein Feld für die Kriterien.",
+                "valueRequired": "Bitte wählen Sie einen Wert für die Kriterien.",
+                "factorsRequired": "Mindestens ein Faktor ist erforderlich.",
+                "weightsNot100": "Faktorgewichte ergeben {total}% — sollte 100% sein."
+            }
+        },
+        "pins": {
+            "title": "Pins",
+            "create": "Pin hinzufügen",
+            "editPin": "Pin bearbeiten",
+            "noPins": "Keine Pins für diese Kategorie konfiguriert",
+            "pinCreated": "Pin erstellt",
+            "pinUpdated": "Pin aktualisiert",
+            "pinDeleted": "Pin gelöscht",
+            "failedToSave": "Speichern fehlgeschlagen",
+            "failedToDelete": "Löschen fehlgeschlagen",
+            "failedToUpdate": "Aktualisieren fehlgeschlagen",
+            "activate": "Aktivieren",
+            "deactivate": "Deaktivieren",
+            "customLabelEn": "Benutzerdefiniertes Label (EN)",
+            "customLabelNl": "Benutzerdefiniertes Label (NL)",
+            "customLabelDe": "Benutzerdefiniertes Label (DE)",
+            "from": "Von",
+            "until": "Bis",
+            "fields": {
+                "product": "Produkt",
+                "position": "Position",
+                "label": "Label",
+                "active": "Aktiv"
+            },
+            "labels": {
+                "sponsored": "Gesponsert",
+                "new_arrival": "Neuheit",
+                "staff_pick": "Unsere Wahl",
+                "sale": "Angebot",
+                "trending": "Trending",
+                "custom": "Benutzerdefiniert"
+            },
+            "helpText": {
+                "position": "Feste Position in der Produktliste. Position 1 = erstes Produkt auf Seite 1. Position 25 = erstes Produkt auf Seite 2 (bei Seitengröße 24). Bei zwei Pins auf derselben Position gewinnt die niedrigste Produkt-ID.",
+                "label": "Visuelles Badge auf dem Produkt in der Storefront. Wählen Sie 'Benutzerdefiniert' für eigenen mehrsprachigen Labeltext.",
+                "active": "Inaktive Pins werden gespeichert, aber nicht in der Storefront angezeigt."
+            }
+        },
+        "filters": {
+            "title": "Filter-Vorlagen",
+            "create": "Vorlage erstellen",
+            "editTemplate": "Vorlage bearbeiten",
+            "category": "Kategorie",
+            "noLinkedTemplate": "Keine Filter-Vorlage verknüpft",
+            "allTemplatesGlobal": "Alle Filter-Vorlagen (Global)",
+            "templateSaved": "Vorlage gespeichert",
+            "templateDeleted": "Vorlage gelöscht",
+            "templateLinked": "Vorlage verknüpft",
+            "templateUnlinked": "Verknüpfung gelöst",
+            "failedToSave": "Speichern fehlgeschlagen",
+            "failedToDelete": "Löschen fehlgeschlagen",
+            "failedToLink": "Verknüpfen fehlgeschlagen",
+            "failedToUnlink": "Verknüpfung lösen fehlgeschlagen",
+            "failedToUpdateMode": "Modus aktualisieren fehlgeschlagen",
+            "filters": "Filter",
+            "propertyGroup": "Eigenschaftsgruppe",
+            "displayType": "Anzeigetyp",
+            "position": "Position",
+            "collapsed": "Eingeklappt",
+            "overrideMode": {
+                "active": "Aktiv",
+                "inherit": "Vererbt",
+                "disabled": "Deaktiviert"
+            },
+            "displayTypes": {
+                "checkbox": "Kontrollkästchen",
+                "link": "Link",
+                "colorbox": "Farbfeld",
+                "slider": "Schieberegler",
+                "bucket": "Bereich"
+            },
+            "helpText": {
+                "overrideMode": "Aktiv: diese Vorlage ersetzt Shopwares Standard-Filter für diese Kategorie. Vererbt: verwendet die Vorlage der übergeordneten Kategorie. Deaktiviert: erzwingt Shopwares Standard-Filter, auch wenn eine übergeordnete Kategorie eine aktive Vorlage hat.",
+                "displayType": "Wie der Filter in der Storefront dargestellt wird. Kontrollkästchen = Mehrfachauswahl, Link = Einzelauswahl, Farbfeld = Farbmuster, Schieberegler = Bereich, Bereich = vordefinierte Bereiche.",
+                "collapsed": "Wenn aktiviert, startet diese Filtergruppe eingeklappt (geschlossen) in der Storefront-Seitenleiste.",
+                "position": "Anzeigereihenfolge dieses Filters in der Storefront-Seitenleiste. Niedrigere Nummern erscheinen zuerst."
+            }
+        },
+        "sorting": {
+            "title": "Sortier-Vorlagen",
+            "create": "Vorlage erstellen",
+            "editTemplate": "Vorlage bearbeiten",
+            "category": "Kategorie",
+            "noLinkedTemplate": "Keine Sortier-Vorlage verknüpft",
+            "allTemplatesGlobal": "Alle Sortier-Vorlagen (Global)",
+            "templateSaved": "Vorlage gespeichert",
+            "templateDeleted": "Vorlage gelöscht",
+            "templateLinked": "Vorlage verknüpft",
+            "templateUnlinked": "Verknüpfung gelöst",
+            "failedToSave": "Speichern fehlgeschlagen",
+            "failedToDelete": "Löschen fehlgeschlagen",
+            "failedToLink": "Verknüpfen fehlgeschlagen",
+            "failedToUnlink": "Verknüpfung lösen fehlgeschlagen",
+            "failedToUpdateMode": "Modus aktualisieren fehlgeschlagen",
+            "sortOptions": "Sortieroptionen",
+            "sortTypes": {
+                "merch_rule": "Merchandising-Regel",
+                "shopware": "Shopware-Feld"
+            },
+            "shopwareFields": {
+                "price": "Preis",
+                "name": "Name",
+                "createdAt": "Erstellt am",
+                "ratingAverage": "Bewertung",
+                "sales": "Verkäufe"
+            },
+            "labelEn": "Label (EN)",
+            "type": "Typ",
+            "field": "Feld",
+            "direction": "Richtung",
+            "rule": "Regel",
+            "helpText": {
+                "overrideMode": "Aktiv: diese Vorlage ersetzt Shopwares Standard-Sortierung für diese Kategorie. Vererbt: verwendet die Vorlage der übergeordneten Kategorie. Deaktiviert: erzwingt Shopwares Standard-Sortierung.",
+                "sortType": "Merchandising-Regel: verwendet den Score-Algorithmus einer Merch-Regel. Shopware-Feld: sortiert nach einem Standard-Produktfeld (Preis, Name, etc.)."
+            }
+        },
+        "personalization": {
+            "title": "Personalisierung",
+            "segments": "Kundensegmente",
+            "createSegment": "Segment erstellen",
+            "editSegment": "Segment bearbeiten",
+            "noSegments": "Keine Kundensegmente konfiguriert",
+            "segmentSaved": "Segment gespeichert",
+            "segmentDeleted": "Segment gelöscht",
+            "failedToSave": "Speichern fehlgeschlagen",
+            "failedToDelete": "Löschen fehlgeschlagen",
+            "hybridCachingTitle": "Hybrides Caching",
+            "hybridCachingDesc": "Gastbesucher erhalten vollständiges HTTP-Caching (keine Personalisierung). Eingeloggte Kunden erhalten personalisierte Produktreihenfolge basierend auf Segmentzugehörigkeit. Globale Einstellungen unter Einstellungen > Plugins > Visual Merchandiser Pro.",
+            "members": "Mitglieder",
+            "boost": "Boost",
+            "boostFactor": "Boost-Faktor",
+            "types": {
+                "purchase_history": "Kaufhistorie",
+                "click_behavior": "Klickverhalten",
+                "filter_behavior": "Filterverhalten",
+                "combined": "Kombiniert"
+            },
+            "helpText": {
+                "type": "Kaufhistorie: segmentiert Kunden nach Bestellhäufigkeit und Aktualität. Klickverhalten: segmentiert nach Produktklick-Engagement. Filterverhalten: segmentiert nach Filternutzungsmustern. Kombiniert: vereint mehrere Segmente mit konfigurierbaren Gewichten.",
+                "boostFactor": "Score-Multiplikator für Produkte für Kunden in diesem Segment. 1.0 = kein Effekt. 2.0 = doppelte Relevanzbewertung. Nur für eingeloggte Kunden.",
+                "active": "Inaktive Segmente werden gespeichert, aber nicht für Personalisierung verwendet. Die Mitgliedschaft wird weiterhin nächtlich berechnet."
+            }
+        },
+        "analytics": {
+            "title": "Analysen",
+            "clicks": "Klick-Events",
+            "ctr": "Klickrate",
+            "productsTracked": "Verfolgte Produkte",
+            "totalClicks": "Klicks gesamt",
+            "avgCtrLabel": "Durchschn. Klickrate",
+            "addToCartRate": "Warenkorb-Rate",
+            "avgPosition": "Durchschn. Position",
+            "productId": "Produkt-ID",
+            "date": "Datum",
+            "noClickData": "Keine Klickdaten",
+            "positionHeatmap": "Positions-Heatmap (1-24)",
+            "heatmapLow": "Niedrig",
+            "heatmapHigh": "Hoch",
+            "periods": {
+                "7": "Letzte 7 Tage",
+                "30": "Letzte 30 Tage",
+                "90": "Letzte 90 Tage"
+            }
+        },
+        "auditLog": {
+            "title": "Audit-Log",
+            "noEntries": "Keine Audit-Log Einträge",
+            "date": "Datum",
+            "entity": "Entität",
+            "action": "Aktion",
+            "user": "Benutzer",
+            "details": "Details",
+            "view": "Anzeigen",
+            "changeDetails": "Änderungsdetails",
+            "entityTypes": {
+                "strix_merch_rule": "Regel",
+                "strix_merch_pin": "Pin",
+                "strix_merch_filter_template": "Filter-Vorlage",
+                "strix_merch_sorting_template": "Sortier-Vorlage",
+                "strix_merch_customer_segment": "Segment"
+            },
+            "actions": {
+                "create": "Erstellt",
+                "update": "Aktualisiert",
+                "delete": "Gelöscht",
+                "activate": "Aktiviert",
+                "deactivate": "Deaktiviert"
+            }
+        },
+        "bulkEdit": {
+            "title": "Massenbearbeitung Regeln",
+            "noRules": "Keine Regeln zu verwalten",
+            "selected": "ausgewählt",
+            "activate": "Aktivieren",
+            "deactivate": "Deaktivieren",
+            "schedule": "Planen",
+            "confirmBulkAction": "Massenaktion bestätigen",
+            "activateConfirm": "{count} Regeln aktivieren?",
+            "deactivateConfirm": "{count} Regeln deaktivieren?",
+            "deleteConfirm": "{count} Regeln löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+            "scheduleConfirm": "Planung für {count} Regeln festlegen:",
+            "status": "Status",
+            "bulkSuccess": "{count} Regeln {action}"
+        },
+        "preview": {
+            "title": "Vorschau",
+            "storefrontPreview": "Storefront-Vorschau",
+            "refresh": "Aktualisieren",
+            "closePreview": "Vorschau schließen",
+            "activeRules": "Aktive Regeln"
+        },
+        "grid": {
+            "pinConfirmTitle": "Pin bestätigen",
+            "pinConfirmMessage": "\"{product}\" an Position {position} pinnen?"
+        },
+        "factorEditor": {
+            "title": "Gewichtete Sortierfaktoren",
+            "addFactor": "Faktor hinzufügen",
+            "distributeEvenly": "Gleichmäßig verteilen",
+            "maxFactorsReached": "Maximum {max} Faktoren erreicht"
+        },
+        "productSearch": {
+            "title": "Produkt auswählen",
+            "searchPlaceholder": "Suche nach Name, Produktnummer oder EAN...",
+            "noProducts": "Keine Produkte gefunden",
+            "typeToSearch": "Mindestens 2 Zeichen eingeben"
+        }
+    }
+}

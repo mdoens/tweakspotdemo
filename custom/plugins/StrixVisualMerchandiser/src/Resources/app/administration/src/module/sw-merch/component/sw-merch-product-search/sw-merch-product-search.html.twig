@@ -1,0 +1,71 @@
+<sw-modal
+    title="Select Product"
+    class="sw-merch-product-search"
+    @modal-close="onClose"
+>
+    <div class="sw-merch-product-search__search">
+        <mt-text-field
+            :model-value="searchTerm"
+            placeholder="Search by name, product number, or EAN..."
+            @update:model-value="onSearchTermChange"
+        />
+    </div>
+
+    <div v-if="isLoading" class="sw-merch-product-search__loader">
+        <mt-loader size="30px" />
+    </div>
+
+    <div v-else-if="products.length === 0 && searchTerm.length >= 2" class="sw-merch-product-search__empty">
+        <p>No products found</p>
+    </div>
+
+    <div v-else-if="products.length === 0" class="sw-merch-product-search__empty">
+        <p>Type at least 2 characters to search</p>
+    </div>
+
+    <div v-else class="sw-merch-product-search__grid">
+        <div
+            v-for="product in products"
+            :key="product.id"
+            class="sw-merch-product-search__item"
+            @click="onSelectProduct(product)"
+        >
+            <div class="sw-merch-product-search__item-image">
+                <img v-if="getProductImage(product)" :src="getProductImage(product)" :alt="product.translated?.name" />
+                <mt-icon v-else name="regular-image" size="32" />
+            </div>
+            <div class="sw-merch-product-search__item-info">
+                <div class="sw-merch-product-search__item-name">
+                    {{ product.translated?.name || product.name }}
+                </div>
+                <div class="sw-merch-product-search__item-number">
+                    {{ product.productNumber }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="totalPages > 1" class="sw-merch-product-search__pagination">
+        <mt-button
+            size="small"
+            variant="ghost"
+            :disabled="page <= 1"
+            @click="onPageChange(page - 1)"
+        >
+            Previous
+        </mt-button>
+        <span>{{ page }} / {{ totalPages }}</span>
+        <mt-button
+            size="small"
+            variant="ghost"
+            :disabled="page >= totalPages"
+            @click="onPageChange(page + 1)"
+        >
+            Next
+        </mt-button>
+    </div>
+
+    <template #modal-footer>
+        <mt-button variant="ghost" @click="onClose">{{ $tc('sw-merch.general.cancel') }}</mt-button>
+    </template>
+</sw-modal>

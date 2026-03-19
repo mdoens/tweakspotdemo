@@ -10,14 +10,10 @@
         "shopware/docker": "^0.3",
         "shopware/elasticsearch": "*",
         "shopware/storefront": "*",
-        "strix/visual-merchandiser": "dev-main",
+        "strix/visual-merchandiser": "*",
         "symfony/flex": "~2"
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/sition_nl/tweakspot.git"
-        },
         {
             "type": "path",
             "url": "custom/plugins/*",

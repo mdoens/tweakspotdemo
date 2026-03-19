@@ -1,0 +1,131 @@
+{% sw_extends '@Storefront/storefront/component/listing/filter/filter-multi-select.html.twig' %}
+
+{#
+    Override filter-multi-select to apply merch_filter_config:
+    - collapsed: control whether the filter starts open or closed in sidebar mode
+      - collapsed=false (default): filter starts expanded (show class added)
+      - collapsed=true: filter starts collapsed (no show class, Shopware default)
+      - no merch config: Shopware default behavior (collapsed)
+    - helpText: show help text below the filter toggle button
+#}
+
+{% block component_filter_multi_select %}
+    {% set hasMerchConfig = merchFilterConfig is defined and merchFilterConfig %}
+    {% set merchCollapsed = hasMerchConfig ? (merchFilterConfig.collapsed|default(false)) : true %}
+
+    <div class="filter-multi-select filter-multi-select-{{ name }} filter-panel-item{% if sidebar %} d-grid{% endif %}{% if not sidebar %} dropdown{% endif %}{% if hasMerchConfig and merchCollapsed %} merch-filter--collapsed{% endif %}"
+         role="listitem"
+         data-{{ pluginSelector }}="true"
+         data-{{ pluginSelector }}-options='{{ dataPluginSelectorOptions|json_encode }}'>
+
+        {% block component_filter_multi_select_toggle %}
+            <button class="filter-panel-item-toggle btn"
+                    aria-expanded="false"
+                    {% if ariaLabel %}
+                    aria-label="{{ ariaLabel }}"
+                    {% endif %}
+                    {% if sidebar %}
+                    data-bs-toggle="collapse"
+                    data-bs-target="#{{ filterItemId }}"
+                    {% else %}
+                    data-bs-toggle="dropdown"
+                    data-boundary="viewport"
+                    data-bs-offset="0,8"
+                    aria-haspopup="true"
+                    {% endif %}>
+
+                {% block component_filter_multi_select_display_name %}
+                    {{ displayName }}
+                {% endblock %}
+
+                {% block component_filter_multi_select_count %}
+                    <span class="filter-multi-select-count"></span>
+                {% endblock %}
+
+                {% block component_filter_multi_select_toggle_icon %}
+                    {% sw_icon 'arrow-medium-down' style {
+                        'pack': 'solid', 'size': 'xs', 'class': 'filter-panel-item-toggle'
+                    } %}
+                {% endblock %}
+            </button>
+
+            {% if hasMerchConfig and merchFilterConfig.helpText %}
+                {% set helpTextValue = merchFilterConfig.helpText[app.request.locale[:2]] ?? merchFilterConfig.helpText.en ?? '' %}
+                {% if helpTextValue %}
+                    <small class="merch-filter-help-text">{{ helpTextValue }}</small>
+                {% endif %}
+            {% endif %}
+        {% endblock %}
+
+        {% block component_filter_multi_select_dropdown %}
+            <div class="filter-multi-select-dropdown filter-panel-item-dropdown{% if sidebar %} collapse{% if hasMerchConfig and not merchCollapsed %} show{% endif %}{% else %} dropdown-menu{% endif %}"
+                 id="{{ filterItemId }}">
+
+                {# Colorbox display type: render property options as color swatches #}
+                {% if hasMerchConfig and merchFilterConfig.displayType == 'colorbox' %}
+                    {% block component_filter_multi_select_colorbox %}
+                        <div class="merch-filter-colorbox" aria-label="{{ displayName }}"
+                             data-merch-filter-expand="true"
+                             data-merch-filter-expand-options='{{ {"maxVisible": merchFilterConfig.maxValues|default(0)}|json_encode }}'>
+                            {% for element in elements %}
+                                <label class="merch-filter-colorbox__item filter-multi-select-option"
+                                       title="{{ element.translated.name|default(element.name) }}">
+                                    <input type="checkbox"
+                                           name="{{ name }}[]"
+                                           value="{{ element.id }}"
+                                           class="merch-filter-colorbox__input" />
+                                    {% if element.colorHexCode is defined and element.colorHexCode %}
+                                        <span class="merch-filter-colorbox__swatch"
+                                              style="background-color: {{ element.colorHexCode }}"></span>
+                                    {% elseif element.media is defined and element.media %}
+                                        <span class="merch-filter-colorbox__swatch merch-filter-colorbox__swatch--image"
+                                              style="background-image: url('{{ element.media.url }}')"></span>
+                                    {% else %}
+                                        <span class="merch-filter-colorbox__swatch merch-filter-colorbox__swatch--fallback"></span>
+                                    {% endif %}
+                                    <span class="merch-filter-colorbox__label">{{ element.translated.name|default(element.name) }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    {% endblock %}
+
+                {# Bucket display type: render as predefined range buttons #}
+                {% elseif hasMerchConfig and merchFilterConfig.displayType == 'bucket' %}
+                    {% block component_filter_multi_select_bucket %}
+                        <div class="merch-filter-bucket" aria-label="{{ displayName }}"
+                             data-merch-filter-expand="true"
+                             data-merch-filter-expand-options='{{ {"maxVisible": merchFilterConfig.maxValues|default(0)}|json_encode }}'>
+                            {% for element in elements %}
+                                <button type="button"
+                                        class="merch-filter-bucket__btn filter-multi-select-option btn btn-sm btn-outline-secondary"
+                                        data-filter-value="{{ element.id|default(element.key|default(loop.index)) }}">
+                                    {{ element.translated.name|default(element.name|default(element.key|default(''))) }}
+                                </button>
+                            {% endfor %}
+                        </div>
+                    {% endblock %}
+
+                {% else %}
+                    {# Default: standard list rendering #}
+                    {% block component_filter_multi_select_list %}
+                        <ul class="filter-multi-select-list" aria-label="{{ displayName }}"
+                            {% if hasMerchConfig and merchFilterConfig.maxValues|default(0) > 0 %}
+                            data-merch-filter-expand="true"
+                            data-merch-filter-expand-options='{{ {"maxVisible": merchFilterConfig.maxValues}|json_encode }}'
+                            {% endif %}>
+                            {% for element in elements %}
+                                {% block component_filter_multi_select_list_item %}
+                                    <li class="filter-multi-select-list-item">
+                                        {% block component_filter_multi_select_list_item_inner %}
+                                            {% sw_include '@Storefront/storefront/component/listing/filter/filter-multi-select-list-item.html.twig' %}
+                                        {% endblock %}
+                                    </li>
+                                {% endblock %}
+                            {% endfor %}
+                        </ul>
+                    {% endblock %}
+                {% endif %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

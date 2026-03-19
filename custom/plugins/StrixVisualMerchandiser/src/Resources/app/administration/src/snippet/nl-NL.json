@@ -1,0 +1,352 @@
+{
+    "sw-merch": {
+        "general": {
+            "title": "Merchandising",
+            "description": "Visual Merchandiser Pro",
+            "selectCategory": "Selecteer een categorie om merchandising te beheren",
+            "save": "Opslaan",
+            "cancel": "Annuleren",
+            "delete": "Verwijderen",
+            "edit": "Bewerken",
+            "close": "Sluiten",
+            "confirm": "Bevestigen",
+            "active": "Actief",
+            "inactive": "Inactief",
+            "name": "Naam",
+            "grid": "Raster",
+            "noData": "Geen gegevens beschikbaar",
+            "previous": "Vorige",
+            "next": "Volgende",
+            "change": "Wijzigen",
+            "unlink": "Ontkoppelen",
+            "all": "Alle",
+            "addFilter": "Filter toevoegen",
+            "addSortOption": "Sorteeroptie toevoegen",
+            "exportCsv": "CSV exporteren",
+            "selectProduct": "Product selecteren",
+            "searchPlaceholder": "Zoeken...",
+            "linkRule": "Koppel een regel...",
+            "linkTemplate": "Koppel een template...",
+            "filterByType": "Filter op type",
+            "allTypes": "Alle typen",
+            "nameRequired": "Naam is verplicht",
+            "selectProductRequired": "Selecteer een product"
+        },
+        "tabs": {
+            "rules": "Regels",
+            "pins": "Pins",
+            "filters": "Filter Templates",
+            "sorting": "Sorteer Templates",
+            "personalization": "Personalisatie",
+            "analytics": "Analyses",
+            "grid": "Raster",
+            "auditLog": "Audit Log",
+            "bulkEdit": "Bulk Bewerken",
+            "preview": "Voorbeeld"
+        },
+        "rules": {
+            "title": "Regels",
+            "create": "Regel aanmaken",
+            "editRule": "Regel bewerken",
+            "categoryRules": "Categorieregels",
+            "allRulesGlobal": "Alle regels (Globaal)",
+            "noLinkedRules": "Geen regels gekoppeld aan deze categorie",
+            "duplicate": "Dupliceren",
+            "duplicateSuccess": "Regel gedupliceerd (inactief)",
+            "ruleCreated": "Regel aangemaakt",
+            "ruleUpdated": "Regel bijgewerkt",
+            "ruleDeleted": "Regel verwijderd",
+            "ruleLinked": "Regel gekoppeld aan categorie",
+            "ruleUnlinked": "Regel ontkoppeld",
+            "failedToSave": "Opslaan mislukt",
+            "failedToDelete": "Verwijderen mislukt",
+            "failedToLink": "Koppelen mislukt",
+            "failedToUnlink": "Ontkoppelen mislukt",
+            "failedToDuplicate": "Dupliceren mislukt",
+            "confirmDelete": "Verwijderen bevestigen",
+            "confirmDeleteMessage": "Dit verwijdert ook alle categoriekoppelingen. Deze actie kan niet ongedaan worden gemaakt.",
+            "applyToChildren": "Toepassen op subcategorieën",
+            "applyToChildrenTooltip": "Koppel deze regel aan alle subcategorieën van de huidige categorie",
+            "applyToChildrenConfirm": "Regel \"{rule}\" koppelen aan {count} subcategorieën?",
+            "noChildCategories": "Deze categorie heeft geen subcategorieën.",
+            "alreadyLinkedToAll": "Regel is al gekoppeld aan alle subcategorieën.",
+            "appliedToChildren": "Regel \"{rule}\" gekoppeld aan {count} subcategorieën.",
+            "failedToApplyChildren": "Toepassen op subcategorieën mislukt.",
+            "boostConfig": "Boost configuratie",
+            "buryConfig": "Onderdrukken configuratie",
+            "formulaSteps": "Formule volgorde stappen",
+            "formulaStepsDesc": "Configureer stapsgewijze sorteerregels",
+            "types": {
+                "weighted_sort": "Gewogen sortering",
+                "boost": "Boost",
+                "bury": "Onderdrukken",
+                "formula_order": "Formule volgorde"
+            },
+            "fields": {
+                "name": "Naam",
+                "type": "Type",
+                "priority": "Prioriteit",
+                "active": "Actief",
+                "validFrom": "Geldig vanaf",
+                "validUntil": "Geldig tot",
+                "field": "Veld",
+                "operator": "Operator",
+                "value": "Waarde",
+                "multiplier": "Vermenigvuldiger"
+            },
+            "operators": {
+                "equals": "Gelijk aan",
+                "notEquals": "Niet gelijk aan",
+                "contains": "Bevat"
+            },
+            "helpText": {
+                "type": "Gewogen sortering: combineer meerdere factoren met gewichten. Boost: vermenigvuldig score voor matchende producten. Onderdrukken: verlaag score voor matchende producten. Formule volgorde: strikte stapsgewijze ordening.",
+                "priority": "Regels met hogere prioriteit worden eerst toegepast. Bij meerdere regels van hetzelfde type wordt alleen de hoogste prioriteit gebruikt.",
+                "active": "Inactieve regels worden opgeslagen maar niet toegepast op de storefront. Gebruik planning om later automatisch te activeren.",
+                "validFrom": "Regel wordt automatisch actief op deze datum. Laat leeg voor directe activering.",
+                "validUntil": "Regel wordt automatisch gedeactiveerd na deze datum. Laat leeg voor geen vervaldatum.",
+                "boostMultiplier": "Score vermenigvuldiger voor matchende producten. 2.0 = twee keer zo waarschijnlijk hoger getoond. Bereik: 1.0 - 5.0.",
+                "buryMultiplier": "Score vermenigvuldiger voor matchende producten. 0.1 = naar beneden geduwd. Bereik: 0.01 - 1.0.",
+                "field": "Het OpenSearch productveld om mee te matchen (bijv. manufacturer.name, tags, properties).",
+                "operator": "Hoe de veldwaarde wordt vergeleken. Gelijk aan = exacte match, Bevat = gedeeltelijke tekstmatch."
+            },
+            "fieldOptions": {
+                "manufacturer": "Fabrikant",
+                "tags": "Tags"
+            },
+            "validation": {
+                "fieldRequired": "Selecteer een veld voor de criteria.",
+                "valueRequired": "Selecteer een waarde voor de criteria.",
+                "factorsRequired": "Minimaal één factor is vereist.",
+                "weightsNot100": "Factorgewichten tellen op tot {total}% — moet 100% zijn."
+            }
+        },
+        "pins": {
+            "title": "Pins",
+            "create": "Pin toevoegen",
+            "editPin": "Pin bewerken",
+            "noPins": "Geen pins geconfigureerd voor deze categorie",
+            "pinCreated": "Pin aangemaakt",
+            "pinUpdated": "Pin bijgewerkt",
+            "pinDeleted": "Pin verwijderd",
+            "failedToSave": "Opslaan mislukt",
+            "failedToDelete": "Verwijderen mislukt",
+            "failedToUpdate": "Bijwerken mislukt",
+            "activate": "Activeren",
+            "deactivate": "Deactiveren",
+            "customLabelEn": "Aangepast label (EN)",
+            "customLabelNl": "Aangepast label (NL)",
+            "customLabelDe": "Aangepast label (DE)",
+            "from": "Vanaf",
+            "until": "Tot",
+            "fields": {
+                "product": "Product",
+                "position": "Positie",
+                "label": "Label",
+                "active": "Actief"
+            },
+            "labels": {
+                "sponsored": "Gesponsord",
+                "new_arrival": "Nieuw",
+                "staff_pick": "Onze keuze",
+                "sale": "Uitverkoop",
+                "trending": "Trending",
+                "custom": "Aangepast"
+            },
+            "helpText": {
+                "position": "Vaste positie in de productlijst. Positie 1 = eerste product op pagina 1. Positie 25 = eerste product op pagina 2 (bij paginagrootte 24). Bij twee pins op dezelfde positie wint het laagste product-ID.",
+                "label": "Visueel badge getoond op het product in de storefront. Kies 'Aangepast' om eigen meertalige labeltekst in te voeren.",
+                "active": "Inactieve pins worden opgeslagen maar niet getoond op de storefront."
+            }
+        },
+        "filters": {
+            "title": "Filter Templates",
+            "create": "Template aanmaken",
+            "editTemplate": "Template bewerken",
+            "category": "Categorie",
+            "noLinkedTemplate": "Geen filter template gekoppeld",
+            "allTemplatesGlobal": "Alle Filter Templates (Globaal)",
+            "templateSaved": "Template opgeslagen",
+            "templateDeleted": "Template verwijderd",
+            "templateLinked": "Template gekoppeld",
+            "templateUnlinked": "Template ontkoppeld",
+            "failedToSave": "Opslaan mislukt",
+            "failedToDelete": "Verwijderen mislukt",
+            "failedToLink": "Koppelen mislukt",
+            "failedToUnlink": "Ontkoppelen mislukt",
+            "failedToUpdateMode": "Modus bijwerken mislukt",
+            "filters": "Filters",
+            "propertyGroup": "Eigenschap groep",
+            "displayType": "Weergavetype",
+            "position": "Positie",
+            "collapsed": "Ingeklapt",
+            "overrideMode": {
+                "active": "Actief",
+                "inherit": "Overerven",
+                "disabled": "Uitgeschakeld"
+            },
+            "displayTypes": {
+                "checkbox": "Selectievakje",
+                "link": "Link",
+                "colorbox": "Kleurvak",
+                "slider": "Schuifregelaar",
+                "bucket": "Bereik"
+            },
+            "helpText": {
+                "overrideMode": "Actief: dit template vervangt Shopware's standaard filters voor deze categorie. Overerven: gebruikt het template van de bovenliggende categorie. Uitgeschakeld: forceert Shopware's standaard filters, zelfs als een bovenliggende categorie een actief template heeft.",
+                "displayType": "Hoe het filter wordt weergegeven in de storefront. Selectievakje = meervoudige selectie, Link = enkele selectie, Kleurvak = kleurswatches, Schuifregelaar = bereik, Bereik = voorgedefinieerde bereiken.",
+                "collapsed": "Indien ingeschakeld, start deze filtergroep ingeklapt (gesloten) in de storefront sidebar.",
+                "position": "Weergavevolgorde van dit filter in de storefront sidebar. Lagere nummers verschijnen eerst."
+            }
+        },
+        "sorting": {
+            "title": "Sorteer Templates",
+            "create": "Template aanmaken",
+            "editTemplate": "Template bewerken",
+            "category": "Categorie",
+            "noLinkedTemplate": "Geen sorteer template gekoppeld",
+            "allTemplatesGlobal": "Alle Sorteer Templates (Globaal)",
+            "templateSaved": "Template opgeslagen",
+            "templateDeleted": "Template verwijderd",
+            "templateLinked": "Template gekoppeld",
+            "templateUnlinked": "Template ontkoppeld",
+            "failedToSave": "Opslaan mislukt",
+            "failedToDelete": "Verwijderen mislukt",
+            "failedToLink": "Koppelen mislukt",
+            "failedToUnlink": "Ontkoppelen mislukt",
+            "failedToUpdateMode": "Modus bijwerken mislukt",
+            "sortOptions": "Sorteeropties",
+            "sortTypes": {
+                "merch_rule": "Merchandising Regel",
+                "shopware": "Shopware Veld"
+            },
+            "shopwareFields": {
+                "price": "Prijs",
+                "name": "Naam",
+                "createdAt": "Aangemaakt op",
+                "ratingAverage": "Beoordeling",
+                "sales": "Verkoop"
+            },
+            "labelEn": "Label (EN)",
+            "type": "Type",
+            "field": "Veld",
+            "direction": "Richting",
+            "rule": "Regel",
+            "helpText": {
+                "overrideMode": "Actief: dit template vervangt Shopware's standaard sortering voor deze categorie. Overerven: gebruikt het template van de bovenliggende categorie. Uitgeschakeld: forceert Shopware's standaard sortering.",
+                "sortType": "Merchandising Regel: gebruikt het score-algoritme van een merch-regel. Shopware Veld: sorteert op een standaard productveld (prijs, naam, etc.)."
+            }
+        },
+        "personalization": {
+            "title": "Personalisatie",
+            "segments": "Klantsegmenten",
+            "createSegment": "Segment aanmaken",
+            "editSegment": "Segment bewerken",
+            "noSegments": "Geen klantsegmenten geconfigureerd",
+            "segmentSaved": "Segment opgeslagen",
+            "segmentDeleted": "Segment verwijderd",
+            "failedToSave": "Opslaan mislukt",
+            "failedToDelete": "Verwijderen mislukt",
+            "hybridCachingTitle": "Hybride Caching",
+            "hybridCachingDesc": "Gastbezoekers krijgen volledige HTTP cache (geen personalisatie). Ingelogde klanten krijgen gepersonaliseerde productvolgorde op basis van segmentlidmaatschap. Globale instellingen beschikbaar in Instellingen > Plugins > Visual Merchandiser Pro.",
+            "members": "leden",
+            "boost": "Boost",
+            "boostFactor": "Boostfactor",
+            "types": {
+                "purchase_history": "Aankoopgeschiedenis",
+                "click_behavior": "Klikgedrag",
+                "filter_behavior": "Filtergedrag",
+                "combined": "Gecombineerd"
+            },
+            "helpText": {
+                "type": "Aankoopgeschiedenis: segmenteert klanten op bestelfrequentie en recentheid. Klikgedrag: segmenteert op productklikkenbetrokkenheid. Filtergedrag: segmenteert op filtergebruikspatronen. Gecombineerd: samenvoegen van meerdere segmenten met configureerbare gewichten.",
+                "boostFactor": "Score vermenigvuldiger voor producten voor klanten in dit segment. 1.0 = geen effect. 2.0 = dubbele relevantiescore. Alleen voor ingelogde klanten.",
+                "active": "Inactieve segmenten worden opgeslagen maar niet gebruikt voor personalisatie. Lidmaatschap wordt nog steeds nachtelijk berekend."
+            }
+        },
+        "analytics": {
+            "title": "Analyses",
+            "clicks": "Klik Events",
+            "ctr": "Doorklikratio",
+            "productsTracked": "Gevolgde producten",
+            "totalClicks": "Totaal klikken",
+            "avgCtrLabel": "Gem. CTR",
+            "addToCartRate": "Winkelwagen-ratio",
+            "avgPosition": "Gem. positie",
+            "productId": "Product ID",
+            "date": "Datum",
+            "noClickData": "Geen klikgegevens",
+            "positionHeatmap": "Positie Heatmap (1-24)",
+            "heatmapLow": "Laag",
+            "heatmapHigh": "Hoog",
+            "periods": {
+                "7": "Laatste 7 dagen",
+                "30": "Laatste 30 dagen",
+                "90": "Laatste 90 dagen"
+            }
+        },
+        "auditLog": {
+            "title": "Audit Log",
+            "noEntries": "Geen audit log entries",
+            "date": "Datum",
+            "entity": "Entiteit",
+            "action": "Actie",
+            "user": "Gebruiker",
+            "details": "Details",
+            "view": "Bekijken",
+            "changeDetails": "Wijzigingsdetails",
+            "entityTypes": {
+                "strix_merch_rule": "Regel",
+                "strix_merch_pin": "Pin",
+                "strix_merch_filter_template": "Filter Template",
+                "strix_merch_sorting_template": "Sorteer Template",
+                "strix_merch_customer_segment": "Segment"
+            },
+            "actions": {
+                "create": "Aangemaakt",
+                "update": "Bijgewerkt",
+                "delete": "Verwijderd",
+                "activate": "Geactiveerd",
+                "deactivate": "Gedeactiveerd"
+            }
+        },
+        "bulkEdit": {
+            "title": "Bulk bewerken regels",
+            "noRules": "Geen regels om te beheren",
+            "selected": "geselecteerd",
+            "activate": "Activeren",
+            "deactivate": "Deactiveren",
+            "schedule": "Plannen",
+            "confirmBulkAction": "Bulkactie bevestigen",
+            "activateConfirm": "{count} regels activeren?",
+            "deactivateConfirm": "{count} regels deactiveren?",
+            "deleteConfirm": "{count} regels verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+            "scheduleConfirm": "Planning instellen voor {count} regels:",
+            "status": "Status",
+            "bulkSuccess": "{count} regels {action}"
+        },
+        "preview": {
+            "title": "Voorbeeld",
+            "storefrontPreview": "Storefront voorbeeld",
+            "refresh": "Vernieuwen",
+            "closePreview": "Voorbeeld sluiten",
+            "activeRules": "Actieve regels"
+        },
+        "grid": {
+            "pinConfirmTitle": "Pin bevestigen",
+            "pinConfirmMessage": "\"{product}\" vastzetten op positie {position}?"
+        },
+        "factorEditor": {
+            "title": "Gewogen sorteerfactoren",
+            "addFactor": "Factor toevoegen",
+            "distributeEvenly": "Gelijkmatig verdelen",
+            "maxFactorsReached": "Maximum {max} factoren bereikt"
+        },
+        "productSearch": {
+            "title": "Product selecteren",
+            "searchPlaceholder": "Zoek op naam, productnummer of EAN...",
+            "noProducts": "Geen producten gevonden",
+            "typeToSearch": "Typ minimaal 2 tekens om te zoeken"
+        }
+    }
+}

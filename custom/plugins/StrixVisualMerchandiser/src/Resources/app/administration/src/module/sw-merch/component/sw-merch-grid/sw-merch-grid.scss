@@ -1,0 +1,150 @@
+.sw-merch-grid {
+    &__toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        h3 { margin: 0; font-size: 16px; font-weight: 600; }
+    }
+
+    &__toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &__dirty-hint {
+        color: #f59e0b;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    &__loader, &__empty {
+        padding: 40px;
+        text-align: center;
+        color: var(--color-text-secondary, #758698);
+    }
+
+    &__items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 10px;
+        padding: 12px;
+    }
+
+    &__item {
+        position: relative;
+        border: 1px solid var(--color-border, #d1d9e0);
+        border-radius: 8px;
+        padding: 10px;
+        cursor: grab;
+        transition: box-shadow 0.15s, opacity 0.15s, border-color 0.15s;
+        text-align: center;
+        background: #fff;
+
+        &:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+
+        &--pinned {
+            border-color: var(--color-interaction-primary-default, #189eff);
+            background: rgba(24, 158, 255, 0.02);
+        }
+
+        &--dragging {
+            opacity: 0.4;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        &--dragover {
+            border-color: #37d046;
+            border-style: dashed;
+            background: rgba(55, 208, 70, 0.04);
+        }
+    }
+
+    &__item-position {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 22px;
+        height: 22px;
+        background: #f0f2f5;
+        border-radius: 50%;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #758698;
+    }
+
+    &__item-pin-badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        background: var(--color-interaction-primary-default, #189eff);
+        color: #fff;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 8px;
+    }
+
+    &__item-image {
+        width: 100%;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 6px;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #f9fafb;
+        pointer-events: none;
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    &__item-name {
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__item-number {
+        font-size: 10px;
+        color: var(--color-text-secondary, #758698);
+        margin-top: 2px;
+    }
+
+    &__item-stock {
+        font-size: 10px;
+        color: #37d046;
+        margin-top: 2px;
+    }
+
+    &__pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 12px;
+        border-top: 1px solid var(--color-border, #d1d9e0);
+        font-size: 13px;
+    }
+}

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/trunk/src/Core/System/SystemConfig/Schema/config.xsd">
+    <card>
+        <title>General Settings</title>
+        <title lang="de-DE">Allgemeine Einstellungen</title>
+        <title lang="nl-NL">Algemene Instellingen</title>
+
+        <input-field type="bool">
+            <name>enablePersonalization</name>
+            <label>Enable Personalization</label>
+            <label lang="de-DE">Personalisierung aktivieren</label>
+            <label lang="nl-NL">Personalisatie inschakelen</label>
+            <helpText>Enable segment-based personalization for logged-in customers</helpText>
+            <helpText lang="de-DE">Segmentbasierte Personalisierung für eingeloggte Kunden aktivieren</helpText>
+            <helpText lang="nl-NL">Segmentgebaseerde personalisatie voor ingelogde klanten inschakelen</helpText>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="int">
+            <name>clickEventRetentionDays</name>
+            <label>Click Event Retention (days)</label>
+            <label lang="de-DE">Click-Event Aufbewahrung (Tage)</label>
+            <label lang="nl-NL">Click Event Bewaarperiode (dagen)</label>
+            <helpText>Number of days to retain raw click event data</helpText>
+            <defaultValue>90</defaultValue>
+        </input-field>
+
+        <input-field type="int">
+            <name>maxFactorsPerRule</name>
+            <label>Max Factors per Rule</label>
+            <label lang="de-DE">Maximale Faktoren pro Regel</label>
+            <label lang="nl-NL">Max Factoren per Regel</label>
+            <helpText>Maximum number of factors in a weighted sort rule</helpText>
+            <defaultValue>5</defaultValue>
+        </input-field>
+
+        <input-field type="int">
+            <name>maxSegmentsPerCustomer</name>
+            <label>Max Segments per Customer</label>
+            <label lang="de-DE">Maximale Segmente pro Kunde</label>
+            <label lang="nl-NL">Max Segmenten per Klant</label>
+            <defaultValue>10</defaultValue>
+        </input-field>
+
+        <input-field type="single-select">
+            <name>segmentRecalcInterval</name>
+            <label>Segment Recalculation Interval</label>
+            <label lang="de-DE">Segment-Neuberechnungsintervall</label>
+            <label lang="nl-NL">Segment Herberekeningsinterval</label>
+            <defaultValue>daily</defaultValue>
+            <options>
+                <option>
+                    <id>hourly</id>
+                    <name>Hourly</name>
+                    <name lang="de-DE">Stündlich</name>
+                    <name lang="nl-NL">Per uur</name>
+                </option>
+                <option>
+                    <id>daily</id>
+                    <name>Daily</name>
+                    <name lang="de-DE">Täglich</name>
+                    <name lang="nl-NL">Dagelijks</name>
+                </option>
+                <option>
+                    <id>weekly</id>
+                    <name>Weekly</name>
+                    <name lang="de-DE">Wöchentlich</name>
+                    <name lang="nl-NL">Wekelijks</name>
+                </option>
+            </options>
+        </input-field>
+
+        <input-field type="single-select">
+            <name>defaultOverrideMode</name>
+            <label>Default Override Mode</label>
+            <label lang="de-DE">Standard-Überschreibungsmodus</label>
+            <label lang="nl-NL">Standaard Override Modus</label>
+            <helpText>Default override mode when assigning a template to a category</helpText>
+            <defaultValue>inherit</defaultValue>
+            <options>
+                <option>
+                    <id>active</id>
+                    <name>Active</name>
+                    <name lang="de-DE">Aktiv</name>
+                    <name lang="nl-NL">Actief</name>
+                </option>
+                <option>
+                    <id>inherit</id>
+                    <name>Inherit</name>
+                    <name lang="de-DE">Vererbt</name>
+                    <name lang="nl-NL">Overerven</name>
+                </option>
+                <option>
+                    <id>disabled</id>
+                    <name>Disabled</name>
+                    <name lang="de-DE">Deaktiviert</name>
+                    <name lang="nl-NL">Uitgeschakeld</name>
+                </option>
+            </options>
+        </input-field>
+        <input-field type="single-select">
+            <name>pinOutOfStockBehavior</name>
+            <label>Pin Out-of-Stock Behavior</label>
+            <label lang="de-DE">Pin-Verhalten bei ausverkauften Produkten</label>
+            <label lang="nl-NL">Pin gedrag bij uitverkochte producten</label>
+            <helpText>Determines whether pinned products that are out of stock are shown or hidden</helpText>
+            <helpText lang="de-DE">Bestimmt, ob angeheftete Produkte ohne Lagerbestand angezeigt oder ausgeblendet werden</helpText>
+            <helpText lang="nl-NL">Bepaalt of gepinde producten zonder voorraad getoond of verborgen worden</helpText>
+            <defaultValue>show</defaultValue>
+            <options>
+                <option>
+                    <id>show</id>
+                    <name>Show (always display pinned products)</name>
+                    <name lang="de-DE">Anzeigen (angeheftete Produkte immer anzeigen)</name>
+                    <name lang="nl-NL">Tonen (gepinde producten altijd tonen)</name>
+                </option>
+                <option>
+                    <id>hide</id>
+                    <name>Hide (skip out-of-stock pinned products)</name>
+                    <name lang="de-DE">Ausblenden (ausverkaufte angeheftete Produkte überspringen)</name>
+                    <name lang="nl-NL">Verbergen (uitverkochte gepinde producten overslaan)</name>
+                </option>
+            </options>
+        </input-field>
+    </card>
+</config>

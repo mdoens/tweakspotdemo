@@ -1,0 +1,32 @@
+<div class="sw-merch-category-tree-item">
+    <div :class="rowClasses" @click="onClick">
+        <span
+            class="sw-merch-category-tree-item__toggle"
+            :class="{ 'sw-merch-category-tree-item__toggle--empty': !hasChildren }"
+            @click.stop="onToggle"
+        >
+            <mt-icon v-if="hasChildren" :name="expanded ? 'regular-chevron-down-xxs' : 'regular-chevron-right-xxs'" size="12" />
+        </span>
+
+        <span class="sw-merch-category-tree-item__name">
+            {{ item.name }}
+        </span>
+
+        <span v-if="indicatorText" class="sw-merch-category-tree-item__indicator">
+            {{ indicatorText }}
+        </span>
+    </div>
+
+    <div v-if="expanded && item.children.length > 0" class="sw-merch-category-tree-item__children">
+        <sw-merch-category-tree-item
+            v-for="child in item.children"
+            :key="child.id"
+            :item="child"
+            :selected-id="selectedId"
+            :indicators="indicators"
+            :depth="depth + 1"
+            @select="onChildSelect"
+            @toggle="onChildToggle"
+        />
+    </div>
+</div>

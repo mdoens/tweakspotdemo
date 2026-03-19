@@ -1,0 +1,79 @@
+<div class="sw-merch-preview">
+    <mt-button variant="ghost" size="small" @click="onToggle">
+        {{ isOpen ? 'Close Preview' : 'Preview' }}
+    </mt-button>
+
+    <transition name="slide">
+        <div v-if="isOpen" class="sw-merch-preview__panel">
+            <div class="sw-merch-preview__topbar">
+                <h3>{{ $tc('sw-merch.preview.storefrontPreview') }}</h3>
+                <mt-button size="small" variant="ghost" @click="onToggle">
+                    <mt-icon name="regular-times-s" size="16" />
+                </mt-button>
+            </div>
+
+            <div class="sw-merch-preview__toolbar">
+                <mt-select
+                    :model-value="selectedSalesChannelId"
+                    :options="salesChannels.map(sc => ({ value: sc.id, label: sc.translated?.name || sc.name }))"
+                    placeholder="Sales Channel"
+                    size="small"
+                    @update:model-value="onSalesChannelChange"
+                />
+                <mt-button size="small" variant="ghost" @click="loadPreview">
+                    <mt-icon name="regular-undo" size="14" />
+                    {{ $tc('sw-merch.preview.refresh') }}
+                </mt-button>
+            </div>
+
+            <!-- Active rules info -->
+            <div v-if="rules.length > 0" class="sw-merch-preview__rules-info">
+                <strong>Active rules:</strong>
+                <span v-for="rule in rules" :key="rule.id" class="sw-merch-preview__rule-badge">
+                    {{ rule.name }} ({{ rule.type }})
+                </span>
+            </div>
+
+            <div v-if="isLoading" class="sw-merch-preview__loader">
+                <mt-loader size="30px" />
+            </div>
+
+            <div v-else class="sw-merch-preview__grid">
+                <div
+                    v-for="(product, index) in previewProducts"
+                    :key="product.id"
+                    class="sw-merch-preview__product"
+                    :class="{ 'sw-merch-preview__product--pinned': isPinned(product.id) }"
+                >
+                    <div class="sw-merch-preview__product-position">{{ index + 1 }}</div>
+
+                    <div v-if="isPinned(product.id)" class="sw-merch-preview__pin-badge">
+                        <mt-icon name="regular-flag" size="10" />
+                        {{ getPinLabel(product.id) }}
+                    </div>
+
+                    <div class="sw-merch-preview__product-image">
+                        <img v-if="getProductImage(product)" :src="getProductImage(product)" :alt="product.translated?.name" />
+                        <mt-icon v-else name="regular-image" size="32" />
+                    </div>
+
+                    <div class="sw-merch-preview__product-name">
+                        {{ getProductName(product) }}
+                    </div>
+
+                    <div class="sw-merch-preview__product-number" v-if="getProductNumber(product)">
+                        {{ getProductNumber(product) }}
+                    </div>
+
+                    <div class="sw-merch-preview__product-price" v-if="product.calculatedPrice">
+                        {{ product.calculatedPrice.unitPrice }} {{ product.calculatedPrice.currencyId }}
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="!isLoading && previewProducts.length === 0" class="sw-merch-preview__empty">
+                No products in this category
+            </div>
+        </div>
+    </transition>
+</div>

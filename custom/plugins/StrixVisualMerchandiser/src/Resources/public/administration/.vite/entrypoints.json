@@ -1,0 +1,25 @@
+{
+  "base": "/bundles/strixvisualmerchandiser/administration/",
+  "entryPoints": {
+    "strix-visual-merchandiser": {
+      "css": [
+        "/bundles/strixvisualmerchandiser/administration/assets/strix-visual-merchandiser-CMwMdIM_.css"
+      ],
+      "dynamic": [],
+      "js": [
+        "/bundles/strixvisualmerchandiser/administration/assets/strix-visual-merchandiser-DyDIvKqv.js"
+      ],
+      "legacy": false,
+      "preload": []
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "7.1.0",
+    7,
+    1,
+    0
+  ],
+  "viteServer": null
+}

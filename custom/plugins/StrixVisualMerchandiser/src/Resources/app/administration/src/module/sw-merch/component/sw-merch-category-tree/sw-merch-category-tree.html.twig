@@ -1,0 +1,22 @@
+<div class="sw-merch-category-tree">
+    <div class="sw-merch-category-tree__header">
+        <h3>{{ $tc('sw-merch.general.title') }}</h3>
+    </div>
+
+    <div class="sw-merch-category-tree__loader" v-if="isLoading">
+        <mt-loader size="30px" />
+    </div>
+
+    <div class="sw-merch-category-tree__list" v-else>
+        <sw-merch-category-tree-item
+            v-for="item in categories"
+            :key="item.id"
+            :item="item"
+            :selected-id="selectedId"
+            :indicators="merchIndicators"
+            :depth="0"
+            @select="onItemSelect"
+            @toggle="onItemToggle"
+        />
+    </div>
+</div>

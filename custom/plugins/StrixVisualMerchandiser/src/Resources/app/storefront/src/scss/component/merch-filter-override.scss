@@ -1,0 +1,149 @@
+/*
+ * Styles for Visual Merchandiser filter template overrides.
+ *
+ * Handles:
+ * - Help text display below filter labels
+ * - Collapsed state for filter panels in sidebar mode
+ */
+
+.merch-filter-help-text {
+    display: block;
+    padding: 0 0.75rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--bs-secondary-color, #6c757d);
+}
+
+// Collapsed modifier: in sidebar mode, Bootstrap collapse is used.
+// When merch config sets collapsed=true, the dropdown starts without the "show" class,
+// so Bootstrap handles the collapsed state natively.
+// This class is available for additional styling if needed.
+.merch-filter--collapsed {
+    .filter-panel-item-toggle {
+        &[aria-expanded="false"] {
+            .filter-panel-item-toggle {
+                transform: rotate(-90deg);
+                transition: transform 0.2s ease;
+            }
+        }
+    }
+}
+
+// Ensure help text does not appear inside dropdown menus in non-sidebar mode
+.dropdown-menu .merch-filter-help-text {
+    display: none;
+}
+
+// ============================================================
+// Colorbox display type: colored square swatches
+// ============================================================
+.merch-filter-colorbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0.5rem 0.75rem;
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    &__input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked + .merch-filter-colorbox__swatch {
+            outline: 2px solid var(--bs-primary, #189eff);
+            outline-offset: 2px;
+        }
+
+        &:focus-visible + .merch-filter-colorbox__swatch {
+            box-shadow: 0 0 0 3px rgba(24, 158, 255, 0.25);
+        }
+    }
+
+    &__swatch {
+        display: block;
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        border: 1px solid var(--bs-border-color, #dee2e6);
+        background-size: cover;
+        background-position: center;
+        transition: outline 0.15s ease, box-shadow 0.15s ease;
+
+        &--image {
+            background-size: cover;
+            background-position: center;
+        }
+
+        &--fallback {
+            background: linear-gradient(135deg, #e5e7eb 25%, #d1d5db 50%, #e5e7eb 75%);
+        }
+    }
+
+    &__label {
+        font-size: 0.6875rem;
+        line-height: 1.2;
+        color: var(--bs-body-color, #374151);
+        text-align: center;
+        max-width: 48px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+// ============================================================
+// Bucket display type: predefined range button group
+// ============================================================
+.merch-filter-bucket {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0.5rem 0.75rem;
+
+    &__btn {
+        font-size: 0.8125rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        white-space: nowrap;
+        transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+        &.is--active,
+        &:active {
+            background-color: var(--bs-primary, #189eff);
+            border-color: var(--bs-primary, #189eff);
+            color: #fff;
+        }
+
+        &:hover:not(.is--active) {
+            background-color: var(--bs-light, #f8f9fa);
+        }
+    }
+}
+
+// ============================================================
+// "Show more" expand button
+// ============================================================
+.merch-filter-expand__btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 0.8125rem;
+    color: var(--bs-primary, #189eff);
+    border: none;
+    background: none;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

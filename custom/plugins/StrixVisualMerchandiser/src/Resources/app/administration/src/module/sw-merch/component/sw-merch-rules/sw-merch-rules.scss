@@ -1,0 +1,98 @@
+.sw-merch-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 12px;
+
+        h3 { margin: 0; font-size: 16px; font-weight: 600; }
+    }
+
+    &__toolbar-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    &__loader, &__empty {
+        padding: 40px;
+        text-align: center;
+        color: var(--color-text-secondary, #758698);
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border: 1px solid var(--color-border, #d1d9e0);
+        border-radius: 6px;
+
+        &:hover {
+            background: var(--color-background-secondary, #f9fafb);
+        }
+    }
+
+    &__type-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        padding: 3px 8px;
+        border-radius: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        flex-shrink: 0;
+    }
+
+    &__item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__item-name {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    &__item-actions {
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+
+    &__overlap-warning {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        background: #fef3c7;
+        border: 1px solid #f59e0b;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #92400e;
+    }
+
+    &__modal-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        h4 {
+            margin: 8px 0 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    }
+}

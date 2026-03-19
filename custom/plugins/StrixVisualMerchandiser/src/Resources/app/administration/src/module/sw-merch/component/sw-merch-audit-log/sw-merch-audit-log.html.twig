@@ -1,0 +1,79 @@
+<div class="sw-merch-audit-log">
+    <mt-card>
+        <template #toolbar>
+            <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+                <h3>{{ $tc('sw-merch.auditLog.title') }}</h3>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <mt-select
+                        :model-value="entityTypeFilter"
+                        :options="entityTypeOptions"
+                        placeholder="Entity Type"
+                        size="small"
+                        style="width:160px"
+                        @update:model-value="(v) => entityTypeFilter = v"
+                    />
+                    <mt-select
+                        :model-value="actionFilter"
+                        :options="actionOptions"
+                        placeholder="Action"
+                        size="small"
+                        style="width:130px"
+                        @update:model-value="(v) => actionFilter = v"
+                    />
+                    <mt-button size="small" variant="ghost" @click="onExportCsv">{{ $tc('sw-merch.general.exportCsv') }}</mt-button>
+                </div>
+            </div>
+        </template>
+
+        <div v-if="isLoading" style="padding:40px;text-align:center"><mt-loader size="30px" /></div>
+
+        <div v-else-if="logs.length === 0" style="padding:24px;text-align:center;color:#758698">
+            <p>No audit log entries</p>
+        </div>
+
+        <table v-else style="width:100%;border-collapse:collapse;font-size:13px">
+            <thead>
+                <tr style="border-bottom:2px solid #d1d9e0">
+                    <th style="text-align:left;padding:8px">Date</th>
+                    <th style="text-align:left;padding:8px">Entity</th>
+                    <th style="text-align:left;padding:8px">Action</th>
+                    <th style="text-align:left;padding:8px">User</th>
+                    <th style="text-align:right;padding:8px">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="log in logs" :key="log.id" style="border-bottom:1px solid #e8ecf0">
+                    <td style="padding:8px;white-space:nowrap">{{ formatDate(log.createdAt) }}</td>
+                    <td style="padding:8px">
+                        <span style="font-size:11px;background:#e8ecf0;padding:1px 6px;border-radius:8px">{{ log.entityType }}</span>
+                    </td>
+                    <td style="padding:8px">
+                        <span :style="{ color: getActionColor(log.action), fontWeight: 600 }">
+                            {{ getActionLabel(log.action) }}
+                        </span>
+                    </td>
+                    <td style="padding:8px;font-family:monospace;font-size:11px">{{ log.userId || '-' }}</td>
+                    <td style="text-align:right;padding:8px">
+                        <mt-button v-if="log.changes" size="small" variant="ghost" @click="onViewDetails(log)">
+                            View
+                        </mt-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div v-if="totalPages > 1" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:16px 0;border-top:1px solid #d1d9e0">
+            <mt-button size="small" variant="ghost" :disabled="page <= 1" @click="onPageChange(page - 1)">{{ $tc('sw-merch.general.previous') }}</mt-button>
+            <span>{{ page }} / {{ totalPages }}</span>
+            <mt-button size="small" variant="ghost" :disabled="page >= totalPages" @click="onPageChange(page + 1)">{{ $tc('sw-merch.general.next') }}</mt-button>
+        </div>
+    </mt-card>
+
+    <!-- Detail Modal -->
+    <sw-modal v-if="selectedLog" title="Change Details" @modal-close="onCloseDetails">
+        <pre style="background:#f4f5f7;padding:16px;border-radius:6px;font-size:12px;overflow:auto;max-height:400px">{{ formatChanges(selectedLog.changes) }}</pre>
+        <template #modal-footer>
+            <mt-button variant="ghost" @click="onCloseDetails">{{ $tc('sw-merch.general.close') }}</mt-button>
+        </template>
+    </sw-modal>
+</div>

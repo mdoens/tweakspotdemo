@@ -1,0 +1,66 @@
+<div class="sw-merch-personalization">
+    <!-- Info card about hybrid caching -->
+    <mt-card>
+        <template #toolbar>
+            <h3>{{ $tc('sw-merch.personalization.title') }}</h3>
+        </template>
+        <div style="padding:12px;background:#eff6ff;border-radius:6px;margin-bottom:16px;font-size:13px">
+            <strong>Hybrid Caching:</strong> Guest visitors get full HTTP cache (no personalization).
+            Logged-in customers get personalized product ordering based on their segment membership.
+            Global settings available in Settings &rarr; Plugins &rarr; Visual Merchandiser Pro.
+        </div>
+    </mt-card>
+
+    <!-- Segments -->
+    <mt-card>
+        <template #toolbar>
+            <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+                <h3>{{ $tc('sw-merch.personalization.segments') }}</h3>
+                <mt-button v-if="canEdit" variant="primary" size="small" @click="onCreateSegment">
+                    {{ $tc('sw-merch.personalization.createSegment') }}
+                </mt-button>
+            </div>
+        </template>
+
+        <div v-if="isLoading" style="padding:40px;text-align:center"><mt-loader size="30px" /></div>
+
+        <div v-else-if="segments.length === 0" style="padding:24px;text-align:center;color:#758698">
+            <p>No customer segments configured</p>
+        </div>
+
+        <div v-else>
+            <div v-for="segment in segments" :key="segment.id" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid #e8ecf0">
+                <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:#ede9fe;color:#5b21b6">
+                    {{ getTypeLabel(segment.type) }}
+                </span>
+                <div style="flex:1">
+                    <strong>{{ segment.name }}</strong>
+                    <small style="margin-left:8px;color:#758698">
+                        {{ getMemberCount(segment) }} members | Boost: {{ segment.boostFactor }}x | {{ segment.active ? 'Active' : 'Inactive' }}
+                    </small>
+                </div>
+                <mt-button v-if="canEdit" size="small" variant="ghost" @click="onEditSegment(segment)">
+                    <mt-icon name="regular-pencil-s" size="16" />
+                </mt-button>
+                <mt-button v-if="canDelete" size="small" variant="ghost-danger" @click="onDeleteSegment(segment)">
+                    <mt-icon name="regular-trash" size="16" />
+                </mt-button>
+            </div>
+        </div>
+    </mt-card>
+
+    <!-- Create/Edit Modal -->
+    <sw-modal v-if="showCreateModal" :title="editingSegment ? 'Edit Segment' : $tc('sw-merch.personalization.createSegment')" @modal-close="onCloseModal">
+        <div style="display:flex;flex-direction:column;gap:16px">
+            <mt-text-field label="Name" :model-value="newSegment.name" @update:model-value="newSegment.name = $event" required />
+            <mt-select label="Type" :help-text="$tc('sw-merch.personalization.helpText.type')" :model-value="newSegment.type" :options="typeOptions" @update:model-value="(v) => newSegment.type = v" />
+            <mt-number-field label="Boost Factor" :help-text="$tc('sw-merch.personalization.helpText.boostFactor')" :model-value="newSegment.boostFactor" @update:model-value="newSegment.boostFactor = $event" :min="0.1" :max="10.0" :step="0.1" />
+            <mt-switch label="Active" :help-text="$tc('sw-merch.personalization.helpText.active')" :model-value="newSegment.active" @update:model-value="newSegment.active = $event" />
+        </div>
+
+        <template #modal-footer>
+            <mt-button variant="ghost" @click="onCloseModal">{{ $tc('sw-merch.general.cancel') }}</mt-button>
+            <mt-button variant="primary" @click="onSaveSegment">{{ $tc('sw-merch.general.save') }}</mt-button>
+        </template>
+    </sw-modal>
+</div>

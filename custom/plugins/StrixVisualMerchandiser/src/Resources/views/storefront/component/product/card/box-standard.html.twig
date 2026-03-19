@@ -1,0 +1,39 @@
+{% sw_extends '@Storefront/storefront/component/product/card/box-standard.html.twig' %}
+
+{% block component_product_box_image %}
+    {# Wrap the image block with tracking data attributes #}
+    <div class="product-image-wrapper"
+         data-merch-product-id="{{ product.id }}"
+         data-merch-click-tracking="true"
+         {% if page is defined and page.header is defined and page.header.navigation is defined and page.header.navigation.active is defined %}
+            data-merch-category-id="{{ page.header.navigation.active.id }}"
+         {% endif %}
+    >
+        {{ parent() }}
+    </div>
+{% endblock %}
+
+{% block component_product_box_image_badges %}
+    {{ parent() }}
+
+    {% if product.extensions.merch_pin is defined and product.extensions.merch_pin.label %}
+        {% set pinLabel = product.extensions.merch_pin.label %}
+        {% set customLabel = product.extensions.merch_pin.customLabel %}
+
+        <div class="merch-pin-badge merch-pin-badge--{{ pinLabel }}">
+            {% if pinLabel == 'custom' and customLabel %}
+                {{ customLabel[app.request.locale[:2]] ?? customLabel.en ?? pinLabel }}
+            {% elseif pinLabel == 'sponsored' %}
+                {{ 'strix-merch.storefront.pinBadge.sponsored'|trans }}
+            {% elseif pinLabel == 'new_arrival' %}
+                {{ 'strix-merch.storefront.pinBadge.newArrival'|trans }}
+            {% elseif pinLabel == 'staff_pick' %}
+                {{ 'strix-merch.storefront.pinBadge.staffPick'|trans }}
+            {% elseif pinLabel == 'sale' %}
+                {{ 'strix-merch.storefront.pinBadge.sale'|trans }}
+            {% elseif pinLabel == 'trending' %}
+                {{ 'strix-merch.storefront.pinBadge.trending'|trans }}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,82 @@
+<div class="sw-merch-bulk-edit">
+    <mt-card>
+        <template #toolbar>
+            <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+                <h3>Bulk Edit Rules</h3>
+                <div v-if="hasSelection" style="display:flex;gap:6px;align-items:center">
+                    <span style="font-size:12px;color:#758698">{{ selectionCount }} selected</span>
+                    <mt-button size="small" variant="ghost" @click="onBulkActivate">Activate</mt-button>
+                    <mt-button size="small" variant="ghost" @click="onBulkDeactivate">Deactivate</mt-button>
+                    <mt-button size="small" variant="ghost" @click="onBulkSchedule">Schedule</mt-button>
+                    <mt-button size="small" variant="ghost-danger" @click="onBulkDelete">{{ $tc('sw-merch.general.delete') }}</mt-button>
+                </div>
+            </div>
+        </template>
+
+        <div v-if="isLoading" style="padding:40px;text-align:center"><mt-loader size="30px" /></div>
+
+        <div v-else-if="rules.length === 0" style="padding:24px;text-align:center;color:#758698">
+            <p>No rules to manage</p>
+        </div>
+
+        <div v-else>
+            <!-- Select all header -->
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:2px solid #d1d9e0;font-size:12px;font-weight:600">
+                <input type="checkbox" :checked="allSelected" @change="onToggleAll" />
+                <span style="flex:1">Name</span>
+                <span style="width:100px">Type</span>
+                <span style="width:60px;text-align:center">Priority</span>
+                <span style="width:60px;text-align:center">Status</span>
+            </div>
+
+            <div
+                v-for="rule in rules"
+                :key="rule.id"
+                style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #e8ecf0"
+                :style="{ background: selectedIds.has(rule.id) ? '#eff6ff' : 'transparent' }"
+            >
+                <input type="checkbox" :checked="selectedIds.has(rule.id)" @change="onToggleSelect(rule.id)" />
+                <span style="flex:1;font-weight:500">{{ rule.name }}</span>
+                <span style="width:100px;font-size:11px;text-transform:uppercase;font-weight:600;color:#758698">{{ rule.type }}</span>
+                <span style="width:60px;text-align:center">{{ rule.priority }}</span>
+                <span style="width:60px;text-align:center">
+                    <span :style="{ color: rule.active ? '#37d046' : '#ff6b6b', fontWeight: 600, fontSize: '11px' }">
+                        {{ rule.active ? 'Active' : 'Inactive' }}
+                    </span>
+                </span>
+            </div>
+        </div>
+    </mt-card>
+
+    <!-- Confirm Modal -->
+    <sw-modal v-if="showConfirmModal" title="Confirm Bulk Action" @modal-close="onCloseConfirm">
+        <div style="padding:8px 0">
+            <p v-if="bulkAction === 'activate'">
+                Activate <strong>{{ selectionCount }}</strong> rules?
+            </p>
+            <p v-if="bulkAction === 'deactivate'">
+                Deactivate <strong>{{ selectionCount }}</strong> rules?
+            </p>
+            <p v-if="bulkAction === 'delete'">
+                <span style="color:#ff6b6b;font-weight:600">Delete {{ selectionCount }} rules?</span>
+                This action cannot be undone. Junction records will also be removed.
+            </p>
+
+            <template v-if="bulkAction === 'schedule'">
+                <p>Set scheduling for <strong>{{ selectionCount }}</strong> rules:</p>
+                <sw-datepicker label="Valid From" :model-value="bulkSchedule.validFrom" @update:model-value="bulkSchedule.validFrom = $event" />
+                <sw-datepicker label="Valid Until" :model-value="bulkSchedule.validUntil" @update:model-value="bulkSchedule.validUntil = $event" style="margin-top:12px" />
+            </template>
+        </div>
+
+        <template #modal-footer>
+            <mt-button variant="ghost" @click="onCloseConfirm">{{ $tc('sw-merch.general.cancel') }}</mt-button>
+            <mt-button
+                :variant="bulkAction === 'delete' ? 'danger' : 'primary'"
+                @click="onConfirmBulk"
+            >
+                Confirm
+            </mt-button>
+        </template>
+    </sw-modal>
+</div>

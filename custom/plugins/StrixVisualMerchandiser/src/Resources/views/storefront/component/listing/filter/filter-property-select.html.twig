@@ -1,0 +1,109 @@
+{% sw_extends '@Storefront/storefront/component/listing/filter/filter-property-select.html.twig' %}
+
+{#
+    Override filter-property-select to support merch_filter_config displayType overrides:
+    - colorbox: render property options as colored square swatches regardless of native displayType
+    - bucket: render as button-group ranges
+    Also integrates the "Show more" expand plugin via data-merch-filter-expand attribute.
+#}
+
+{% block component_filter_multi_select_dropdown %}
+    {% set hasMerchConfig = merchFilterConfig is defined and merchFilterConfig %}
+
+    <div class="filter-multi-select-dropdown filter-panel-item-dropdown{% if sidebar %} collapse{% if hasMerchConfig and not (merchFilterConfig.collapsed|default(false)) %} show{% endif %}{% else %} dropdown-menu{% endif %}"
+         id="{{ filterItemId }}">
+
+        {# Colorbox display type from merch config: render as color swatches #}
+        {% if hasMerchConfig and merchFilterConfig.displayType == 'colorbox' %}
+            <div class="merch-filter-colorbox" aria-label="{{ displayName }}"
+                 data-merch-filter-expand="true"
+                 data-merch-filter-expand-options='{{ {"maxVisible": merchFilterConfig.maxValues|default(0)}|json_encode }}'>
+                {% for element in elements %}
+                    <label class="merch-filter-colorbox__item filter-property-select-option"
+                           title="{{ element.translated.name|default(element.name) }}">
+                        <input type="checkbox"
+                               name="{{ name }}[]"
+                               value="{{ element.id }}"
+                               id="{{ element.id }}"
+                               data-label="{{ element.translated.name|default(element.name) }}"
+                               {% if element.colorHexCode is defined and element.colorHexCode %}
+                               data-preview-hex="{{ element.colorHexCode }}"
+                               {% endif %}
+                               {% if element.media is defined and element.media %}
+                               data-preview-image-url="{{ element.media.url }}"
+                               {% endif %}
+                               class="merch-filter-colorbox__input" />
+                        {% if element.colorHexCode is defined and element.colorHexCode %}
+                            <span class="merch-filter-colorbox__swatch"
+                                  style="background-color: {{ element.colorHexCode }}"></span>
+                        {% elseif element.media is defined and element.media %}
+                            <span class="merch-filter-colorbox__swatch merch-filter-colorbox__swatch--image"
+                                  style="background-image: url('{{ element.media.url }}')"></span>
+                        {% else %}
+                            <span class="merch-filter-colorbox__swatch merch-filter-colorbox__swatch--fallback"></span>
+                        {% endif %}
+                        <span class="merch-filter-colorbox__label">{{ element.translated.name|default(element.name) }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+
+        {# Bucket display type from merch config: render as range buttons #}
+        {% elseif hasMerchConfig and merchFilterConfig.displayType == 'bucket' %}
+            <div class="merch-filter-bucket" aria-label="{{ displayName }}"
+                 data-merch-filter-expand="true"
+                 data-merch-filter-expand-options='{{ {"maxVisible": merchFilterConfig.maxValues|default(0)}|json_encode }}'>
+                {% for element in elements %}
+                    <button type="button"
+                            class="merch-filter-bucket__btn filter-property-select-option btn btn-sm btn-outline-secondary"
+                            data-filter-value="{{ element.id|default(element.key|default(loop.index)) }}">
+                        {{ element.translated.name|default(element.name|default(element.key|default(''))) }}
+                    </button>
+                {% endfor %}
+            </div>
+
+        {# Default: use Shopware's native rendering with optional expand plugin #}
+        {% else %}
+            <ul class="filter-multi-select-list" aria-label="{{ displayName }}"
+                {% if hasMerchConfig and merchFilterConfig.maxValues|default(0) > 0 %}
+                data-merch-filter-expand="true"
+                data-merch-filter-expand-options='{{ {"maxVisible": merchFilterConfig.maxValues}|json_encode }}'
+                {% endif %}>
+                {% for element in elements %}
+                    <li class="filter-multi-select-list-item filter-property-select-list-item">
+                        {% if displayType == 'color' or displayType == 'media' %}
+                            {% set color = element.colorHexCode %}
+                            {% set media = element.media.url %}
+                            {% set elName = element.translated.name %}
+                            {% set id = element.id %}
+                            <span class="filter-property-select-preview"
+                                  title="{{ elName }}"
+                                  {% if displayType == 'color' and color %}
+                                  style="background: {{ color }}"
+                                  {% endif %}
+                                  {% if displayType == 'media' and media %}
+                                  style="background-image: url('{{ media }}')"
+                                  {% endif %}>
+                                <input type="checkbox"
+                                       class="filter-property-select-checkbox filter-multi-select-checkbox"
+                                       id="{{ id }}"
+                                       data-label="{{ elName }}"
+                                       {% if displayType == 'color' and color %}
+                                       data-preview-hex="{{ color }}"
+                                       {% endif %}
+                                       {% if displayType == 'media' and media %}
+                                       data-preview-image-url="{{ media }}"
+                                       {% endif %}>
+                                <span class="filter-property-select-preview-checkmark">
+                                    {% sw_icon 'checkmark' style {pack: 'solid', size: 'xs'} %}
+                                </span>
+                            </span>
+                            <label class="filter-multi-select-item-label" for="{{ id }}">{{ elName }}</label>
+                        {% else %}
+                            {% sw_include '@Storefront/storefront/component/listing/filter/filter-multi-select-list-item.html.twig' %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}

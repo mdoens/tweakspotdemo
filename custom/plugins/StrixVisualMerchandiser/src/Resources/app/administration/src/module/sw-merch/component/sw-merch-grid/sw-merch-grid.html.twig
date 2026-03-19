@@ -1,0 +1,109 @@
+<div class="sw-merch-grid">
+    <mt-card>
+        <template #toolbar>
+            <div class="sw-merch-grid__toolbar">
+                <h3>{{ $tc('sw-merch.tabs.grid') }}</h3>
+                <div class="sw-merch-grid__toolbar-actions">
+                    <small v-if="isDirty" class="sw-merch-grid__dirty-hint">
+                        {{ pendingPinChanges.length }} {{ $tc('sw-merch.general.change') }}
+                    </small>
+                    <mt-button
+                        v-if="isDirty"
+                        variant="primary"
+                        size="small"
+                        @click="onSave"
+                    >
+                        {{ $tc('sw-merch.general.save') }}
+                    </mt-button>
+                </div>
+            </div>
+        </template>
+
+        <div v-if="isLoading" class="sw-merch-grid__loader">
+            <mt-loader size="30px" />
+        </div>
+
+        <div v-else-if="products.length === 0" class="sw-merch-grid__empty">
+            <p>{{ $tc('sw-merch.general.noData') }}</p>
+        </div>
+
+        <div v-else class="sw-merch-grid__items" ref="gridContainer">
+            <div
+                v-for="(product, index) in products"
+                :key="product.id"
+                class="sw-merch-grid__item"
+                :class="{
+                    'sw-merch-grid__item--pinned': isPinned(product.id),
+                    'sw-merch-grid__item--dragging': false,
+                }"
+                draggable="true"
+                @dragstart="$event.dataTransfer.setData('text/plain', index); $event.target.classList.add('sw-merch-grid__item--dragging')"
+                @dragend="$event.target.classList.remove('sw-merch-grid__item--dragging')"
+                @dragover.prevent
+                @dragenter.prevent="$event.target.closest('.sw-merch-grid__item')?.classList.add('sw-merch-grid__item--dragover')"
+                @dragleave="$event.target.closest('.sw-merch-grid__item')?.classList.remove('sw-merch-grid__item--dragover')"
+                @drop="$event.target.closest('.sw-merch-grid__item')?.classList.remove('sw-merch-grid__item--dragover'); onDragEnd({ oldIndex: parseInt($event.dataTransfer.getData('text/plain')), newIndex: index })"
+            >
+                <div class="sw-merch-grid__item-position">
+                    {{ (page - 1) * limit + index + 1 }}
+                </div>
+
+                <div class="sw-merch-grid__item-pin-badge" v-if="isPinned(product.id)">
+                    <mt-icon name="regular-flag" size="10" />
+                    {{ $tc('sw-merch.pins.title') }} #{{ getPinPosition(product.id) }}
+                </div>
+
+                <div class="sw-merch-grid__item-image">
+                    <img v-if="getProductImage(product)" :src="getProductImage(product)" :alt="product.translated?.name" />
+                    <mt-icon v-else name="regular-image" size="40" />
+                </div>
+
+                <div class="sw-merch-grid__item-name">
+                    {{ product.translated?.name || product.name }}
+                </div>
+
+                <div class="sw-merch-grid__item-number">
+                    {{ product.productNumber }}
+                </div>
+
+                <div class="sw-merch-grid__item-stock" v-if="product.stock != null">
+                    {{ product.stock }} {{ $tc('sw-merch.general.active') === 'Active' ? 'in stock' : 'op voorraad' }}
+                </div>
+            </div>
+        </div>
+
+        <div v-if="totalPages > 1" class="sw-merch-grid__pagination">
+            <mt-button size="small" variant="ghost" :disabled="page <= 1" @click="onPageChange(page - 1)">
+                {{ $tc('sw-merch.general.previous') }}
+            </mt-button>
+            <span>{{ page }} / {{ totalPages }}</span>
+            <mt-button size="small" variant="ghost" :disabled="page >= totalPages" @click="onPageChange(page + 1)">
+                {{ $tc('sw-merch.general.next') }}
+            </mt-button>
+        </div>
+    </mt-card>
+
+    <!-- Pin confirmation modal -->
+    <sw-modal
+        v-if="showPinConfirm"
+        :title="$tc('sw-merch.grid.pinConfirmTitle')"
+        variant="small"
+        @modal-close="onCancelPin"
+    >
+        <p>
+            {{ $tc('sw-merch.grid.pinConfirmMessage', 0, {
+                product: pendingDragResult ? pendingDragResult.productName : '',
+                position: pendingDragResult ? pendingDragResult.position : ''
+            }) }}
+        </p>
+
+        <template #modal-footer>
+            <mt-button variant="ghost" size="small" @click="onCancelPin">
+                {{ $tc('sw-merch.general.cancel') }}
+            </mt-button>
+            <mt-button variant="primary" size="small" @click="onConfirmPin">
+                {{ $tc('sw-merch.general.confirm') }}
+            </mt-button>
+        </template>
+    </sw-modal>
+</div>

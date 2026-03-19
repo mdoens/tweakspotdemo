@@ -1,0 +1,183 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <!-- Entity Definitions -->
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchRule\MerchRuleDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_rule" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchRuleCategory\MerchRuleCategoryDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_rule_category" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchPin\MerchPinDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_pin" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchFilterTemplate\MerchFilterTemplateDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_filter_template" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchFilterTemplateCategory\MerchFilterTemplateCategoryDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_filter_template_category" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchSortingTemplate\MerchSortingTemplateDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_sorting_template" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchSortingTemplateCategory\MerchSortingTemplateCategoryDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_sorting_template_category" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchAuditLog\MerchAuditLogDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_audit_log" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchClickEvent\MerchClickEventDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_click_event" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchClickAggregate\MerchClickAggregateDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_click_aggregate" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchCustomerSegment\MerchCustomerSegmentDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_customer_segment" />
+        </service>
+        <service id="Strix\VisualMerchandiser\Core\Content\MerchCustomerSegmentMembership\MerchCustomerSegmentMembershipDefinition">
+            <tag name="shopware.entity.definition" entity="strix_merch_customer_segment_membership" />
+        </service>
+
+        <!-- SearchQueryBuilder Decorator (pass-through; scoring handled by ElasticsearchQuerySubscriber) -->
+        <service id="Strix\VisualMerchandiser\Core\Merchandising\MerchSearchQueryBuilder"
+                 decorates="Shopware\Elasticsearch\Product\AbstractProductSearchQueryBuilder">
+            <argument type="service" id="Strix\VisualMerchandiser\Core\Merchandising\MerchSearchQueryBuilder.inner" />
+        </service>
+
+        <!-- Core Services -->
+        <service id="Strix\VisualMerchandiser\Core\Merchandising\ScoreCalculator">
+            <argument type="service" id="strix_merch_rule.repository" />
+            <argument type="service" id="strix_merch_rule_category.repository" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Core\Merchandising\PinResolver">
+            <argument type="service" id="strix_merch_pin.repository" />
+            <argument type="service" id="logger" />
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Core\Merchandising\FilterOverrideService">
+            <argument type="service" id="strix_merch_filter_template_category.repository" />
+            <argument type="service" id="strix_merch_filter_template.repository" />
+            <argument type="service" id="category.repository" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Core\Merchandising\PersonalizationService">
+            <argument type="service" id="strix_merch_customer_segment_membership.repository" />
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Core\Merchandising\SegmentCalculator">
+            <argument type="service" id="strix_merch_customer_segment.repository" />
+            <argument type="service" id="strix_merch_customer_segment_membership.repository" />
+            <argument type="service" id="strix_merch_click_event.repository" />
+            <argument type="service" id="order_line_item.repository" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Core\Merchandising\ProductEnrichmentService">
+            <argument type="service" id="order_line_item.repository" />
+            <argument type="service" id="strix_merch_click_aggregate.repository" />
+            <argument type="service" id="Doctrine\DBAL\Connection" />
+            <argument type="service" id="logger" />
+            <argument type="service" id="OpenSearch\Client" />
+            <argument type="service" id="Shopware\Elasticsearch\Framework\ElasticsearchHelper" />
+            <argument type="service" id="Shopware\Core\Content\Product\ProductDefinition" />
+        </service>
+
+        <!-- Elasticsearch -->
+        <service id="Strix\VisualMerchandiser\Elasticsearch\MerchElasticsearchProductDefinition"
+                 decorates="Shopware\Elasticsearch\Product\ElasticsearchProductDefinition">
+            <argument type="service" id="Strix\VisualMerchandiser\Elasticsearch\MerchElasticsearchProductDefinition.inner" />
+            <argument type="service" id="Shopware\Core\Content\Product\ProductDefinition" />
+        </service>
+
+        <!-- Subscribers -->
+        <service id="Strix\VisualMerchandiser\Subscriber\ProductListingSubscriber">
+            <argument type="service" id="Strix\VisualMerchandiser\Core\Merchandising\PinResolver" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Subscriber\ProductListingResultSubscriber">
+            <argument type="service" id="Strix\VisualMerchandiser\Core\Merchandising\PinResolver" />
+            <argument type="service" id="Strix\VisualMerchandiser\Core\Merchandising\FilterOverrideService" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Subscriber\CacheInvalidationSubscriber">
+            <argument type="service" id="Shopware\Core\Framework\Adapter\Cache\CacheInvalidator" />
+            <argument type="service" id="Doctrine\DBAL\Connection" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Subscriber\StorefrontClickTrackingSubscriber">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Subscriber\AuditLogSubscriber">
+            <argument type="service" id="strix_merch_audit_log.repository" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\Subscriber\ElasticsearchQuerySubscriber">
+            <argument type="service" id="strix_merch_rule.repository" />
+            <argument type="service" id="strix_merch_pin.repository" />
+            <argument type="service" id="Strix\VisualMerchandiser\Core\Merchandising\PersonalizationService" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <!-- API Controller -->
+        <service id="Strix\VisualMerchandiser\Api\ClickTrackingController" public="true">
+            <argument type="service" id="strix_merch_click_event.repository" />
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+            <tag name="controller.service_arguments" />
+        </service>
+
+        <!-- Scheduled Tasks -->
+        <service id="Strix\VisualMerchandiser\ScheduledTask\SegmentCalculationTask">
+            <tag name="shopware.scheduled.task" />
+        </service>
+        <service id="Strix\VisualMerchandiser\ScheduledTask\SegmentCalculationTaskHandler">
+            <argument type="service" id="scheduled_task.repository" />
+            <argument type="service" id="Strix\VisualMerchandiser\Core\Merchandising\SegmentCalculator" />
+            <argument type="service" id="logger" />
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\ScheduledTask\ClickEventCleanupTask">
+            <tag name="shopware.scheduled.task" />
+        </service>
+        <service id="Strix\VisualMerchandiser\ScheduledTask\ClickEventCleanupTaskHandler">
+            <argument type="service" id="scheduled_task.repository" />
+            <argument type="service" id="Doctrine\DBAL\Connection" />
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService" />
+            <argument type="service" id="logger" />
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\ScheduledTask\MerchScheduleTask">
+            <tag name="shopware.scheduled.task" />
+        </service>
+        <service id="Strix\VisualMerchandiser\ScheduledTask\MerchScheduleTaskHandler">
+            <argument type="service" id="scheduled_task.repository" />
+            <argument type="service" id="strix_merch_rule.repository" />
+            <argument type="service" id="strix_merch_pin.repository" />
+            <argument type="service" id="strix_merch_audit_log.repository" />
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="Strix\VisualMerchandiser\ScheduledTask\ProductEnrichmentTask">
+            <tag name="shopware.scheduled.task" />
+        </service>
+        <service id="Strix\VisualMerchandiser\ScheduledTask\ProductEnrichmentTaskHandler">
+            <argument type="service" id="scheduled_task.repository" />
+            <argument type="service" id="Strix\VisualMerchandiser\Core\Merchandising\ProductEnrichmentService" />
+            <argument type="service" id="logger" />
+            <tag name="messenger.message_handler" />
+        </service>
+    </services>
+</container>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df4873518ae8d8cb14a17d43f14c5146",
+    "content-hash": "da70a34a35ca6e61f85cb8115963ad74",
     "packages": [
         {
             "name": "async-aws/core",
@@ -6246,10 +6246,10 @@
         {
             "name": "strix/visual-merchandiser",
             "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "git@bitbucket.org:sition_nl/tweakspot.git",
-                "reference": "2c2777c6542adedc2743168744a64d80c91c0e0c"
+            "dist": {
+                "type": "path",
+                "url": "custom/plugins/StrixVisualMerchandiser",
+                "reference": "38c8a36272ab0576362c017d1e759a1b4b7045ae"
             },
             "require": {
                 "php": ">=8.2",
@@ -6263,7 +6263,6 @@
                 "phpstan/phpstan-phpunit": "^2.0",
                 "symplify/easy-coding-standard": "^12.0"
             },
-            "default-branch": true,
             "type": "shopware-platform-plugin",
             "extra": {
                 "shopware-plugin-class": "Strix\\VisualMerchandiser\\StrixVisualMerchandiser",
@@ -6292,7 +6291,10 @@
                 "proprietary"
             ],
             "description": "Visual Merchandiser Pro - Native merchandising for Shopware 6.7",
-            "time": "2026-03-19T22:28:31+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "symfony/asset",
@@ -11578,9 +11580,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "strix/visual-merchandiser": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

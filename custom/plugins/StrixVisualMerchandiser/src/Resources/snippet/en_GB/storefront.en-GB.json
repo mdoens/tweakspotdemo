@@ -1,0 +1,13 @@
+{
+    "strix-merch": {
+        "storefront": {
+            "pinBadge": {
+                "sponsored": "Sponsored",
+                "newArrival": "New",
+                "staffPick": "Staff Pick",
+                "sale": "Sale",
+                "trending": "Trending"
+            }
+        }
+    }
+}

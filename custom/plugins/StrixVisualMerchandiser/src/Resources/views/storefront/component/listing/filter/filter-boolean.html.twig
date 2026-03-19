@@ -1,0 +1,61 @@
+{% sw_extends '@Storefront/storefront/component/listing/filter/filter-boolean.html.twig' %}
+
+{#
+    Override filter-boolean to apply merch_filter_config:
+    - helpText: show help text below the filter label
+
+    Boolean filters don't have a collapsed dropdown — they are always a single checkbox.
+    The merch-filter--collapsed class is added for CSS targeting consistency.
+#}
+
+{% block component_filter_boolean %}
+    {% set hasMerchConfig = merchFilterConfig is defined and merchFilterConfig %}
+
+    {% set filterBooleanOptions = {
+        name: name,
+        displayName: displayName,
+        snippets: {
+            disabledFilterText: 'listing.disabledFilterTooltip'|trans|sw_sanitize,
+            altText: altText,
+            altTextActive: altTextActive
+        }
+    } %}
+
+    {% block component_filter_boolean_panel_item %}
+        <div class="filter-boolean filter-panel-item{% if hasMerchConfig and merchFilterConfig.collapsed|default(false) %} merch-filter--collapsed{% endif %}"
+             role="listitem"
+             data-filter-boolean="true"
+             data-filter-boolean-options="{{ filterBooleanOptions|json_encode }}">
+            {% block component_filter_boolean_container %}
+                <div class="form-check">
+                    {% block component_filter_boolean_checkbox %}
+                        <input type="checkbox"
+                               class="filter-boolean-input form-check-input"
+                               id="{{ name }}"
+                               name="{{ name }}">
+                    {% endblock %}
+
+                    {% block component_filter_boolean_label %}
+                        <label for="{{ name }}" class="filter-boolean-label custom-control-label">
+                            {% block component_filter_boolean_display_name %}
+                                {% if altText %}
+                                    <span class="filter-boolean-alt-text visually-hidden">{{ altText }}</span>
+                                    <span aria-hidden="true">{{ displayName }}</span>
+                                {% else %}
+                                    {{ displayName }}
+                                {% endif %}
+                            {% endblock %}
+                        </label>
+                    {% endblock %}
+
+                    {% if hasMerchConfig and merchFilterConfig.helpText %}
+                        {% set helpTextValue = merchFilterConfig.helpText[app.request.locale[:2]] ?? merchFilterConfig.helpText.en ?? '' %}
+                        {% if helpTextValue %}
+                            <small class="merch-filter-help-text">{{ helpTextValue }}</small>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endblock %}
+        </div>
+    {% endblock %}
+{% endblock %}

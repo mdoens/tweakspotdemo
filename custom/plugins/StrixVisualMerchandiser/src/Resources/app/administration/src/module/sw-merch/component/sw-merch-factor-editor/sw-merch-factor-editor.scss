@@ -1,0 +1,87 @@
+.sw-merch-factor-editor {
+    border: 1px solid var(--color-border, #d1d9e0);
+    border-radius: 8px;
+    padding: 16px;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+
+        h4 { margin: 0; font-size: 14px; font-weight: 600; }
+    }
+
+    &__total {
+        font-size: 13px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 12px;
+
+        &--valid { background: #d1fae5; color: #065f46; }
+        &--invalid { background: #fee2e2; color: #991b1b; }
+    }
+
+    &__factors {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__factor {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__field-select {
+        width: 160px;
+        flex-shrink: 0;
+    }
+
+    &__weight {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &__slider {
+        width: 100%;
+        cursor: pointer;
+    }
+
+    &__weight-bar {
+        width: 80px;
+        height: 6px;
+        background: #e8ecf0;
+        border-radius: 3px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    &__weight-fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.15s ease, background-color 0.15s ease;
+    }
+
+    &__weight-value {
+        width: 40px;
+        text-align: right;
+        font-size: 13px;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    &__direction-select {
+        width: 130px;
+        flex-shrink: 0;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+    }
+}

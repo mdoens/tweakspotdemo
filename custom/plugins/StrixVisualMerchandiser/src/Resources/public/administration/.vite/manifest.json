@@ -1,0 +1,11 @@
+{
+  "main.js": {
+    "file": "assets/strix-visual-merchandiser-DyDIvKqv.js",
+    "name": "strix-visual-merchandiser",
+    "src": "main.js",
+    "isEntry": true,
+    "css": [
+      "assets/strix-visual-merchandiser-CMwMdIM_.css"
+    ]
+  }
+}

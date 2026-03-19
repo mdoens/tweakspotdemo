@@ -1,0 +1,41 @@
+{
+    "name": "strix/visual-merchandiser",
+    "description": "Visual Merchandiser Pro - Native merchandising for Shopware 6.7",
+    "type": "shopware-platform-plugin",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Strix\\VisualMerchandiser\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Strix\\VisualMerchandiser\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=8.2",
+        "shopware/core": "~6.7.0",
+        "shopware/storefront": "~6.7.0",
+        "shopware/elasticsearch": "~6.7.0",
+        "shyim/opensearch-php-dsl": "^1.0.5"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "symplify/easy-coding-standard": "^12.0"
+    },
+    "extra": {
+        "shopware-plugin-class": "Strix\\VisualMerchandiser\\StrixVisualMerchandiser",
+        "label": {
+            "en-GB": "Visual Merchandiser Pro",
+            "de-DE": "Visual Merchandiser Pro",
+            "nl-NL": "Visual Merchandiser Pro"
+        },
+        "description": {
+            "en-GB": "Native visual merchandising with OpenSearch-powered sorting, boosting, pinning and personalization",
+            "de-DE": "Natives Visual Merchandising mit OpenSearch-basierter Sortierung, Boosting, Pinning und Personalisierung",
+            "nl-NL": "Native visual merchandising met OpenSearch-aangedreven sortering, boosting, pinning en personalisatie"
+        }
+    }
+}
