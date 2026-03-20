@@ -5,6 +5,14 @@ echo "========================================"
 echo " Tweakspot — Visual Merchandiser Pro"
 echo "========================================"
 
+# Source .env file if DATABASE_URL not set as container env
+if [ -z "$DATABASE_URL" ] && [ -f /app/.env ]; then
+    echo "[boot] Loading .env file..."
+    set -a
+    . /app/.env
+    set +a
+fi
+
 # Extract DB host from DATABASE_URL
 DB_HOST=$(echo "$DATABASE_URL" | sed -n 's/.*@\([^:]*\):.*/\1/p')
 DB_PORT=$(echo "$DATABASE_URL" | sed -n 's/.*:\([0-9]*\)\/.*/\1/p')
