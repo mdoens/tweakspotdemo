@@ -34,8 +34,10 @@ RUN chmod +x /app/entrypoint.sh
 # 6. Fix permissions
 RUN chown -R www-data:www-data /app
 
-# 7. FrankenPHP config
+# 7. FrankenPHP config + PHP memory
 ENV SERVER_NAME=:80
+ENV PHP_MEMORY_LIMIT=512M
+RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memory.ini
 EXPOSE 80
 
 ENTRYPOINT ["/app/entrypoint.sh"]
