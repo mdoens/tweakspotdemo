@@ -19,11 +19,11 @@ COPY . /app
 # 3. Install dependencies (plugin from Bitbucket via HTTPS — repo is public)
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# 4. Build admin + storefront assets
+# 4. Build admin + storefront assets (increase memory for theme compile)
 RUN chmod +x bin/build-administration.sh bin/build-storefront.sh 2>/dev/null || true
-RUN CI=1 APP_URL=http://localhost bin/ci 2>/dev/null || \
-    (CI=1 APP_URL=http://localhost bin/build-administration.sh && \
-     CI=1 APP_URL=http://localhost SHOPWARE_SKIP_THEME_COMPILE=true bin/build-storefront.sh) || true
+RUN PHP_MEMORY_LIMIT=512M CI=1 APP_URL=http://localhost php -d memory_limit=512M bin/ci 2>/dev/null || \
+    (CI=1 APP_URL=http://localhost php -d memory_limit=512M bin/build-administration.sh && \
+     CI=1 APP_URL=http://localhost SHOPWARE_SKIP_THEME_COMPILE=true php -d memory_limit=512M bin/build-storefront.sh) || true
 
 # 5. Copy entrypoint
 COPY docker/entrypoint.sh /app/entrypoint.sh
