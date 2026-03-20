@@ -1,47 +1,100 @@
 # Tweakspot Hosting
 
-Shopware 6.7 production hosting for [tweakspot.db.strix.tools](https://tweakspot.db.strix.tools).
+**Live:** https://tweakspot.db.strix.tools
+**Admin:** https://tweakspot.db.strix.tools/admin (`admin` / `shopware`)
 
-Includes the **Visual Merchandiser Pro** plugin via Composer from Bitbucket.
+Shopware 6.7 production hosting met Visual Merchandiser Pro plugin.
 
-## How it works
+## Repos
+
+| Repo | URL | Doel |
+|------|-----|------|
+| **Plugin** | `bitbucket.org/sition_nl/tweakspot` | Plugin code + DDEV local dev |
+| **Hosting** | `github.com/mdoens/tweakspotdemo` | Dit repo — Shopware project + Dockerfile |
+
+## Architectuur
 
 ```
-composer.json
-  → requires strix/visual-merchandiser (from bitbucket.org/sition_nl/tweakspot)
-  → requires shopware/core ~6.7.0
-
-docker/Dockerfile
-  → shopware-cli project ci (composer install + admin JS build + theme compile)
-  → everything baked into one image
-
-docker-compose.yml
-  → Shopware (FrankenPHP) + MariaDB + Redis + OpenSearch
+Dockerfile (dunglas/frankenphp:1-php8.3)
+  → composer install --no-scripts (plugin als path dependency)
+  → bin/ci (admin JS + storefront theme build, memory_limit=512M)
+  → .env.prod → .env (met Coolify DB hostname)
+  → entrypoint.sh:
+    - Source .env als DATABASE_URL niet als container env gezet
+    - Check DB table count (skip install als >10 tabellen)
+    - system:install --create-database --basic-setup --force
+    - plugin:refresh + plugin:install --activate
+    - cache:clear
+    - exec frankenphp run
 ```
 
 ## Deploy
 
 ```bash
-# Build image (includes plugin + admin JS + compiled theme)
-docker compose build --ssh default
+# 1. Code wijzigen + pushen
+git push github main
 
-# Start
-docker compose up -d
+# 2. In Coolify dashboard: tweakspot → Deploy
+# Of via API:
+curl -sf -X GET "https://cool1.db.strix.tools/api/v1/applications/c15zcizrvvuxdzsgqbk2m8pp/start" \
+  -H "Authorization: Bearer ${COOLIFY_TOKEN}" -H "Accept: application/json"
 
-# First time: run Shopware setup
-docker compose exec shopware setup
+# 3. Wacht ~5 min (Docker build + entrypoint)
+
+# 4. Eerste keer: domain mapping + assets + fixtures
+#    (zie "Na verse installatie" hieronder)
 ```
 
-## On Coolify
+## Coolify
 
-Push to Bitbucket → Coolify auto-builds from `docker/Dockerfile`.
+| Resource | UUID | Type |
+|----------|------|------|
+| App | `c15zcizrvvuxdzsgqbk2m8pp` | Application (Dockerfile from GitHub) |
+| DB | `wxg02q1r6z1r82dmycff199x` | MariaDB 11 (Coolify managed) |
+| Server | `cool1.db.strix.tools` | SSH: `root@cool1.db.strix.tools` |
 
-The SSH key `scout-deploy` must have access to both repos:
-- `sition_nl/tweakspot-hosting` (this repo)
-- `sition_nl/tweakspot` (plugin repo, composer dependency)
+Dashboard: https://cool1.db.strix.tools
 
-## Plugin repo
+## Na verse installatie
 
-The plugin source lives at: `bitbucket.org/sition_nl/tweakspot`
+```bash
+# SSH naar server
+ssh root@cool1.db.strix.tools
 
-Local development with DDEV: see that repo's README.
+# Find container
+APP=$(docker ps --format '{{.Names}}' | grep c15zcizrvvuxdzsgqbk2m8pp | head -1)
+
+# Assets installeren (admin JS bundles)
+docker exec $APP php -d memory_limit=512M bin/console assets:install
+
+# Trusted proxies (HTTPS detectie achter Traefik)
+docker exec $APP bash -c 'mkdir -p /app/config/packages && cat > /app/config/packages/trusted_proxies.yaml << EOF
+framework:
+    trusted_proxies: "REMOTE_ADDR"
+    trusted_headers: ["x-forwarded-for","x-forwarded-host","x-forwarded-proto","x-forwarded-port"]
+EOF'
+
+# Cache clear
+docker exec $APP php -d memory_limit=512M bin/console cache:clear
+```
+
+Domain mapping + fixtures via Shopware API (of via admin UI).
+
+## Fixtures (demo data)
+
+192 producten (48/categorie), 4 rules, 7 pins. Seed script in het deploy commando of via de plugin repo's DDEV seeders.
+
+## Learnings
+
+| Issue | Fix |
+|-------|-----|
+| PHP memory 128MB te weinig | `memory_limit=512M` in Dockerfile + runtime |
+| `composer install` auto-scripts crashen | `--no-scripts` (needs Symfony kernel) |
+| `system:install` crasht op "admin exists" | Check DB table count, niet install.lock |
+| Coolify env vars overschrijven `.env` niet | Gebruik `.env.prod` in Dockerfile |
+| Coolify API maakt geen DB records | Resources via dashboard aanmaken |
+| Admin laadt niet (http:// links) | Trusted proxies YAML configureren |
+| Storefront "Sales Channel Not Found" | Beide http + https domains toevoegen |
+| FrankenPHP ACME challenge 404 | Coolify beheert Traefik labels automatisch |
+| Bitbucket SSH builds falen | GitHub gebruiken (Coolify bug met Bitbucket) |
+| ARM image op AMD64 server | `docker buildx --platform linux/amd64` |
