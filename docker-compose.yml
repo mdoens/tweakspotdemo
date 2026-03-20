@@ -3,8 +3,6 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
-      ssh:
-        - default
     restart: always
     environment:
       DATABASE_URL: mysql://shopware:shopware@db:3306/shopware
