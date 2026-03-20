@@ -30,7 +30,10 @@
             "symfony/runtime": true
         },
         "optimize-autoloader": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.3.99"
+        }
     },
     "scripts": {
         "auto-scripts": {
