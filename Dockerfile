@@ -17,7 +17,7 @@ WORKDIR /app
 COPY . /app
 
 # 3. Install dependencies (plugin from Bitbucket via HTTPS — repo is public)
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # 4. Build admin + storefront assets
 RUN chmod +x bin/build-administration.sh bin/build-storefront.sh 2>/dev/null || true
