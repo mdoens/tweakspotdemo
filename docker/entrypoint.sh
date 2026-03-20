@@ -5,13 +5,14 @@ echo "========================================"
 echo " Tweakspot — Visual Merchandiser Pro"
 echo "========================================"
 
-# Source .env file if DATABASE_URL not set as container env
-if [ -z "$DATABASE_URL" ] && [ -f /app/.env ]; then
-    echo "[boot] Loading .env file..."
+# Always source .env file first, then container env vars override
+if [ -f /app/.env ]; then
+    echo "[boot] Loading /app/.env..."
     set -a
     . /app/.env
     set +a
 fi
+echo "[boot] DATABASE_URL=${DATABASE_URL}"
 
 # Extract DB host from DATABASE_URL
 DB_HOST=$(echo "$DATABASE_URL" | sed -n 's/.*@\([^:]*\):.*/\1/p')
