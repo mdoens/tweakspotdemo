@@ -15,6 +15,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 COPY . /app
+# Use production .env (with correct DB hostname for Coolify)
+RUN cp .env.prod .env 2>/dev/null || true
 
 # 3. Install dependencies (plugin from Bitbucket via HTTPS — repo is public)
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
