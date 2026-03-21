@@ -18,11 +18,24 @@ services:
       SHOPWARE_HTTP_DEFAULT_TTL: 7200
       TRUSTED_PROXIES: REMOTE_ADDR
     volumes:
-      - shopware_media:/var/www/html/public/media
-      - shopware_thumbnail:/var/www/html/public/thumbnail
-      - shopware_jwt:/var/www/html/config/jwt
+      - shopware_media:/app/public/media
+      - shopware_thumbnail:/app/public/thumbnail
+      - shopware_jwt:/app/config/jwt
+      - shopware_lock:/app/install.lock
     expose:
       - "8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tweakspot-http.rule=Host(`tweakspot.db.strix.tools`)"
+      - "traefik.http.routers.tweakspot-http.entrypoints=http"
+      - "traefik.http.routers.tweakspot-https.rule=Host(`tweakspot.db.strix.tools`)"
+      - "traefik.http.routers.tweakspot-https.entrypoints=https"
+      - "traefik.http.routers.tweakspot-https.tls=true"
+      - "traefik.http.routers.tweakspot-https.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tweakspot.loadbalancer.server.port=8000"
+    networks:
+      - default
+      - coolify
     depends_on:
       db:
         condition: service_healthy
@@ -82,5 +95,10 @@ volumes:
   shopware_media:
   shopware_thumbnail:
   shopware_jwt:
+  shopware_lock:
   db_data:
   os_data:
+
+networks:
+  coolify:
+    external: true
